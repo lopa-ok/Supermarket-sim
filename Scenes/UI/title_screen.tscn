@@ -1,0 +1,208 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" uid="uid://1fwgy4uhpo7p" path="res://Scripts/UI/title_screen.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://b2nf2m4op8ahy" path="res://Resources/ui_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://hlwq8xx770by" path="res://images/Logo.png" id="3_logo"]
+[ext_resource type="PackedScene" uid="uid://sf57nxroco57" path="res://Resources/Models/_Demo.glb" id="4_demo"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_title"]
+sky_top_color = Color(0.18, 0.22, 0.35, 1)
+sky_horizon_color = Color(0.3, 0.32, 0.4, 1)
+ground_bottom_color = Color(0.1, 0.1, 0.1, 1)
+ground_horizon_color = Color(0.3, 0.32, 0.4, 1)
+
+[sub_resource type="Sky" id="Sky_title"]
+sky_material = SubResource("ProceduralSkyMaterial_title")
+
+[sub_resource type="Environment" id="Environment_title"]
+background_mode = 2
+sky = SubResource("Sky_title")
+ambient_light_source = 2
+ambient_light_color = Color(0.75, 0.72, 0.68, 1)
+ambient_light_energy = 0.5
+tonemap_mode = 2
+glow_enabled = true
+glow_intensity = 0.4
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+mouse_filter = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+msaa_3d = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport"]
+environment = SubResource("Environment_title")
+
+[node name="TitleCamera" type="Camera3D" parent="SubViewportContainer/SubViewport"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 0.866025, -0.5, 0, 0.5, 0.866025, 0, 5, 16)
+fov = 60.0
+
+[node name="StoreModel" parent="SubViewportContainer/SubViewport" instance=ExtResource("4_demo")]
+transform = Transform3D(0.45, 0, 0, 0, 0.45, 0, 0, 0, 0.45, 11.303698, 0, 26.463947)
+
+[node name="FillLight" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 10, 20)
+light_color = Color(0.95, 0.92, 0.85, 1)
+light_energy = 0.7
+shadow_enabled = true
+
+[node name="RimLight" type="OmniLight3D" parent="SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 24)
+light_energy = 2.0
+omni_range = 25.0
+omni_attenuation = 1.5
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.35)
+
+[node name="VBox" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+alignment = 1
+
+[node name="TopSpacer" type="Control" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+
+[node name="LogoContainer" type="CenterContainer" parent="VBox"]
+layout_mode = 2
+
+[node name="Logo" type="TextureRect" parent="VBox/LogoContainer"]
+layout_mode = 2
+texture = ExtResource("3_logo")
+expand_mode = 3
+stretch_mode = 5
+custom_minimum_size = Vector2(500, 200)
+
+[node name="Spacer1" type="Control" parent="VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="MainPanel" type="VBoxContainer" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 14
+
+[node name="PlayBtn" type="Button" parent="VBox/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(260, 52)
+theme_override_font_sizes/font_size = 22
+text = "Play"
+
+[node name="SettingsBtn" type="Button" parent="VBox/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(260, 52)
+theme_override_font_sizes/font_size = 22
+text = "Settings"
+
+[node name="QuitBtn" type="Button" parent="VBox/MainPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(260, 52)
+theme_override_font_sizes/font_size = 22
+text = "Quit"
+
+[node name="SettingsPanel" type="PanelContainer" parent="VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(360, 0)
+visible = false
+
+[node name="SettingsVBox" type="VBoxContainer" parent="VBox/SettingsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Spacer1" type="Control" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+
+[node name="SettingsTitle" type="Label" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 24
+text = "Settings"
+horizontal_alignment = 1
+
+[node name="Sep" type="HSeparator" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+
+[node name="VolLabel" type="Label" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Master Volume"
+
+[node name="VolSlider" type="HSlider" parent="VBox/SettingsPanel/SettingsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 22)
+min_value = 0.0
+max_value = 100.0
+value = 100.0
+
+[node name="SensLabel" type="Label" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "Mouse Sensitivity"
+
+[node name="SensSlider" type="HSlider" parent="VBox/SettingsPanel/SettingsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 22)
+min_value = 0.0
+max_value = 100.0
+value = 50.0
+
+[node name="BackBtn" type="Button" parent="VBox/SettingsPanel/SettingsVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+theme_override_font_sizes/font_size = 18
+text = "Back"
+
+[node name="Spacer2" type="Control" parent="VBox/SettingsPanel/SettingsVBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 8)
+
+[node name="BottomSpacer" type="Control" parent="VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5

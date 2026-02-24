@@ -1,0 +1,237 @@
+[gd_scene load_steps=20 format=3 uid="uid://u68y3ye4qo2e"]
+
+[ext_resource type="PackedScene" path="res://Scenes/Player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://dvhj7csge6wu7" path="res://Scenes/Shelves/shelf.tscn" id="2_shelf"]
+[ext_resource type="PackedScene" uid="uid://bvutrydllfo5x" path="res://Scenes/Checkout/checkout_counter.tscn" id="3_checkout"]
+[ext_resource type="PackedScene" path="res://Scenes/Products/restock_crate.tscn" id="4_crate"]
+[ext_resource type="PackedScene" path="res://Scenes/Store/store_door.tscn" id="5_door"]
+[ext_resource type="PackedScene" path="res://Scenes/Customers/customer.tscn" id="6_customer"]
+[ext_resource type="Script" uid="uid://bfdq83ph0gjqc" path="res://Scripts/Store/store_manager.gd" id="7_store_mgr"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/hud.tscn" id="8_hud"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/stock_panel.tscn" id="12_stock"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/day_summary.tscn" id="9_summary"]
+[ext_resource type="Script" uid="uid://b0hpnjog2kjtk" path="res://Scripts/Shelves/aisle.gd" id="10_aisle"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/pause_menu.tscn" id="11_pause"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_etdcq"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_5sc64"]
+sky_material = SubResource("ProceduralSkyMaterial_etdcq")
+
+[sub_resource type="Environment" id="Environment_phcil"]
+background_mode = 2
+sky = SubResource("Sky_5sc64")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_store"]
+vertices = PackedVector3Array(-11, 0.3, -8.25, -10.75, 0.3, -7.5, -10.25, 0.3, -7.75, -10.25, 0.3, -10.75, -14.5, 0.3, -6.25, -13.25, 0.3, -6.25, -13, 0.3, -8.25, -14.5, 0.3, -14.5, -9, 0.3, -14.5, -9, 0.3, -11, -7.75, 0.3, -7.75, -7.25, 0.3, -7.5, -7, 0.3, -8, -7.75, 0.3, -10.75, 5.5, 0.3, -10.5, 5.5, 0.3, -10.75, 5.25, 0.3, -12.5, -5, 0.3, -8, 5.25, 0.3, -14.5, 5.5, 0.3, -8.5, -4.75, 0.3, -7.5, -7, 0.3, -2, -7, 0.3, -4, -7.25, 0.3, -4.5, -7.75, 0.3, -4.25, -7.75, 0.3, -1.75, -7.25, 0.3, -1.5, 13.25, 0.3, -12.5, 14.5, 0.3, -14.5, 13, 0.3, 0.25, 13.25, 0.3, 1.5, 14.5, 0.3, 1.5, 13.25, 0.3, -10.25, 13, 0.3, -8.5, 9, 0.3, 0.25, 13, 0.3, -10.75, -4.75, 0.3, -2, -4.75, 0.3, -4.25, -4.5, 0.3, 1.25, 8.75, 0.3, 1.25, -9.25, 2.05, -10, -9.25, 2.05, -8, -8.75, 2.05, -8, -8.75, 2.05, -10, -10.75, 0.3, 1.5, -10.5, 0.3, 1.5, -10.25, 0.3, 1, -10.25, 0.3, -1.25, -11, 0.3, -2.25, -8, 0.3, -1, -8.25, 0.3, 1, -8, 0.3, 1.5, -7.25, 0.3, 1.5, -8, 0.3, -7, -8, 0.3, -5, -13.25, 0.3, -2, -11, 0.3, -4, -13.25, 0.3, -4.25, -10, 0.3, -7, -10.25, 0.3, -4.75, -14.5, 0.3, 0, -13.25, 0.3, 0, -12.25, 2.05, -7.25, -12.25, 2.05, -5, -11.75, 2.05, -5, -11.75, 2.05, -7.25, -6.25, 2.05, -7, -6.25, 2.05, -5, -5.75, 2.05, -5, -5.75, 2.05, -7, -9.25, 2.05, -4, -9.25, 2.05, -2, -8.75, 2.05, -2, -8.75, 2.05, -4, -12.25, 2.05, -1.25, -12.25, 2.05, 1, -11.75, 2.05, 1, -11.75, 2.05, -1.25, -6.25, 1.8, -1, -6.25, 1.8, 1, -5.75, 2.05, 1, -5.75, 2.05, -1, -11, 0.3, 2, -10.5, 0.3, 4.75, 0, 0.3, 14.5, 0, 0.3, 12.75, -1.25, 0.3, 12.75, -13, 0.3, 2, -14.5, 0.3, 14.5, -8.25, 0.3, 5, -1.5, 0.3, 11.75, -8, 0.3, 4.5, 9, 0.3, 4.75, 10.75, 0.3, 4.75, 10.75, 0.3, 2.75, 9, 0.3, 2.5, -4.5, 0.3, 1.5, -1, 0.3, 11.25, 1.25, 0.3, 11.25, 8.75, 0.3, 6.25, 11.5, 1.05, 1.5, 12.25, 1.3, 2, 12.25, 1.05, 1.25, -7, 0.3, 2, -4.75, 0.3, 2, 11, 0.3, 7.25, 10.75, 0.3, 6.75, 9, 0.3, 6.75, 1.75, 0.3, 12.5, 14.5, 0.3, 14.5, 13, 0.3, 3, 13.25, 0.3, 5, 13, 0.3, 7.25, 1.75, 0.3, 11.5, -9.5, 2.05, 2, -9.5, 2.05, 4, -9, 2.05, 4, -9, 2.05, 2, 11.75, 1.05, 5.75, 11.75, 1.3, 6.25, 12.25, 1.3, 6.25, 12.25, 1.05, 5.75)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 7), PackedInt32Array(3, 6, 8), PackedInt32Array(8, 6, 7), PackedInt32Array(3, 0, 6), PackedInt32Array(8, 9, 3), PackedInt32Array(11, 10, 12), PackedInt32Array(12, 10, 13), PackedInt32Array(16, 15, 14), PackedInt32Array(13, 8, 17), PackedInt32Array(17, 8, 16), PackedInt32Array(16, 8, 18), PackedInt32Array(17, 12, 13), PackedInt32Array(13, 9, 8), PackedInt32Array(14, 19, 16), PackedInt32Array(16, 19, 20), PackedInt32Array(16, 20, 17), PackedInt32Array(26, 25, 21), PackedInt32Array(21, 25, 22), PackedInt32Array(22, 25, 24), PackedInt32Array(22, 24, 23), PackedInt32Array(16, 18, 27), PackedInt32Array(27, 18, 28), PackedInt32Array(30, 29, 31), PackedInt32Array(31, 29, 33), PackedInt32Array(31, 33, 32), PackedInt32Array(31, 32, 28), PackedInt32Array(29, 34, 33), PackedInt32Array(33, 34, 19), PackedInt32Array(35, 27, 32), PackedInt32Array(32, 27, 28), PackedInt32Array(21, 22, 36), PackedInt32Array(36, 22, 37), PackedInt32Array(37, 20, 38), PackedInt32Array(38, 20, 19), PackedInt32Array(38, 19, 34), PackedInt32Array(38, 34, 39), PackedInt32Array(38, 36, 37), PackedInt32Array(15, 35, 14), PackedInt32Array(14, 35, 32), PackedInt32Array(43, 42, 40), PackedInt32Array(40, 42, 41), PackedInt32Array(45, 44, 46), PackedInt32Array(46, 44, 47), PackedInt32Array(47, 44, 48), PackedInt32Array(25, 26, 49), PackedInt32Array(49, 26, 50), PackedInt32Array(50, 26, 51), PackedInt32Array(51, 26, 52), PackedInt32Array(10, 11, 53), PackedInt32Array(53, 11, 54), PackedInt32Array(54, 11, 23), PackedInt32Array(54, 23, 24), PackedInt32Array(48, 55, 56), PackedInt32Array(56, 55, 57), PackedInt32Array(2, 58, 1), PackedInt32Array(1, 58, 59), PackedInt32Array(1, 59, 56), PackedInt32Array(50, 46, 49), PackedInt32Array(49, 46, 47), PackedInt32Array(4, 5, 57), PackedInt32Array(55, 61, 60), PackedInt32Array(56, 59, 48), PackedInt32Array(48, 59, 47), PackedInt32Array(55, 60, 57), PackedInt32Array(57, 60, 4), PackedInt32Array(53, 54, 58), PackedInt32Array(58, 54, 59), PackedInt32Array(65, 64, 62), PackedInt32Array(62, 64, 63), PackedInt32Array(69, 68, 66), PackedInt32Array(66, 68, 67), PackedInt32Array(73, 72, 70), PackedInt32Array(70, 72, 71), PackedInt32Array(77, 76, 74), PackedInt32Array(74, 76, 75), PackedInt32Array(81, 80, 78), PackedInt32Array(78, 80, 79), PackedInt32Array(44, 45, 82), PackedInt32Array(82, 45, 83), PackedInt32Array(86, 85, 84), PackedInt32Array(61, 87, 60), PackedInt32Array(60, 87, 88), PackedInt32Array(83, 89, 88), PackedInt32Array(88, 89, 86), PackedInt32Array(88, 86, 84), PackedInt32Array(82, 83, 87), PackedInt32Array(87, 83, 88), PackedInt32Array(91, 90, 89), PackedInt32Array(89, 90, 86), PackedInt32Array(93, 92, 94), PackedInt32Array(94, 92, 95), PackedInt32Array(96, 38, 97), PackedInt32Array(97, 38, 98), PackedInt32Array(98, 38, 99), PackedInt32Array(99, 38, 39), PackedInt32Array(95, 92, 39), PackedInt32Array(39, 92, 99), PackedInt32Array(102, 101, 100), PackedInt32Array(52, 103, 51), PackedInt32Array(51, 103, 91), PackedInt32Array(104, 96, 97), PackedInt32Array(103, 104, 91), PackedInt32Array(91, 104, 97), PackedInt32Array(91, 97, 90), PackedInt32Array(106, 105, 107), PackedInt32Array(107, 105, 109), PackedInt32Array(107, 109, 108), PackedInt32Array(108, 109, 84), PackedInt32Array(30, 31, 110), PackedInt32Array(110, 31, 111), PackedInt32Array(84, 85, 108), PackedInt32Array(94, 110, 93), PackedInt32Array(93, 110, 111), PackedInt32Array(105, 112, 109), PackedInt32Array(107, 113, 99), PackedInt32Array(99, 113, 98), PackedInt32Array(111, 31, 112), PackedInt32Array(112, 31, 109), PackedInt32Array(108, 113, 107), PackedInt32Array(117, 116, 114), PackedInt32Array(114, 116, 115), PackedInt32Array(121, 120, 118), PackedInt32Array(118, 120, 119)]
+agent_height = 1.8
+agent_radius = 0.4
+agent_max_climb = 0.3
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(30, 0.2, 30)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor"]
+albedo_color = Color(0.75, 0.72, 0.65, 1)
+
+[node name="MainStore" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_phcil")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_store")
+
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = SubResource("Material_floor")
+
+[node name="Player" parent="NavigationRegion3D" instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Aisle_BakeryDairy" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Bakery & Dairy Aisle"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -5.0)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -7.5)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -10.0)
+
+[node name="Shelf_Bakery" parent="NavigationRegion3D/Aisle_BakeryDairy" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -6.001149, 0, -6.023852)
+shelf_tag = "bakery"
+front_shelf_tag = "bakery"
+front_max_stock = 5
+back_shelf_tag = "bakery"
+back_max_stock = 5
+
+[node name="Shelf_Dairy" parent="NavigationRegion3D/Aisle_BakeryDairy" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -9.034441, 0, -9.050961)
+shelf_tag = "dairy"
+front_shelf_tag = "dairy"
+front_max_stock = 5
+back_shelf_tag = "dairy"
+back_max_stock = 5
+
+[node name="Aisle_SnacksProduceBeverages" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Snacks, Produce & Beverages Aisle"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 3.0)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, 0.0)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.5, 0, -3.0)
+
+[node name="Shelf_Produce" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -5.884577, 0, -0.023926497)
+shelf_tag = "produce"
+front_shelf_tag = "produce"
+front_max_stock = 5
+back_shelf_tag = "produce"
+back_max_stock = 5
+
+[node name="Shelf_Snacks" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -9.064599, 0, -3.0510354)
+shelf_tag = "snacks"
+front_shelf_tag = "snacks"
+front_max_stock = 5
+back_shelf_tag = "snacks"
+back_max_stock = 5
+
+[node name="Shelf_Beverages" parent="NavigationRegion3D/Aisle_SnacksProduceBeverages" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -9.270269, 0, 3.0635486)
+shelf_tag = "beverages"
+front_shelf_tag = "beverages"
+front_max_stock = 5
+back_shelf_tag = "beverages"
+back_max_stock = 5
+
+[node name="Aisle_DryGoodsHygiene" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Dry Goods & Hygiene Aisle"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_DryGoodsHygiene"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_DryGoodsHygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, 0.0)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_DryGoodsHygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -3.0)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_DryGoodsHygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -6.0)
+
+[node name="Shelf_DryGoods" parent="NavigationRegion3D/Aisle_DryGoodsHygiene" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.034403, 0, -6.15359)
+shelf_tag = "dry_goods"
+front_shelf_tag = "dry_goods"
+front_max_stock = 5
+back_shelf_tag = "dry_goods"
+back_max_stock = 5
+
+[node name="Shelf_Hygiene" parent="NavigationRegion3D/Aisle_DryGoodsHygiene" instance=ExtResource("2_shelf")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -12.064562, 0, -0.15366554)
+shelf_tag = "hygiene"
+front_shelf_tag = "hygiene"
+front_max_stock = 5
+back_shelf_tag = "hygiene"
+back_max_stock = 5
+
+[node name="CheckoutCounter1" parent="NavigationRegion3D" instance=ExtResource("3_checkout")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.00575, 0, 1.6343517)
+
+[node name="CheckoutCounter2" parent="NavigationRegion3D" instance=ExtResource("3_checkout")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.004462, 0, 6)
+
+[node name="StoreDoor" parent="NavigationRegion3D" instance=ExtResource("5_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+
+[node name="RestockArea" type="Node3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+
+[node name="Crate_Bread" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.173571, 0, 0.539505)
+product_id = "bread"
+
+[node name="Crate_Milk" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.173571, 0, 0.539505)
+product_id = "milk"
+
+[node name="Crate_Apple" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.173571, 0, 0.539505)
+product_id = "apple"
+
+[node name="Crate_Cheese" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.173571, 0, 0.539505)
+product_id = "cheese"
+
+[node name="Crate_Cereal" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1900063, 0, -1.6845112)
+product_id = "cereal"
+
+[node name="Crate_Water" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.190006, 0, -1.6845112)
+product_id = "water"
+
+[node name="Crate_Chips" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.190006, 0, -1.6845112)
+product_id = "chips"
+
+[node name="Crate_Soap" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12.190006, 0, -1.6845112)
+product_id = "soap"
+
+[node name="StoreManager" type="Node3D" parent="."]
+script = ExtResource("7_store_mgr")
+customer_scene = ExtResource("6_customer")
+
+[node name="Entrance" type="Marker3D" parent="StoreManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.90077)
+
+[node name="Exit" type="Marker3D" parent="StoreManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10.258185)
+
+[node name="CustomerSpawnTimer" type="Timer" parent="StoreManager"]
+one_shot = true
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UILayer" instance=ExtResource("8_hud")]
+
+[node name="StockPanel" parent="UILayer" instance=ExtResource("12_stock")]
+
+[node name="DaySummary" parent="UILayer" instance=ExtResource("9_summary")]
+
+[node name="PauseMenu" parent="UILayer" instance=ExtResource("11_pause")]

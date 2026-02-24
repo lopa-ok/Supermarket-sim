@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" uid="uid://bdc8xl5yramcq" path="res://Resources/Models/Food_SI_Food_Organic_Apple_04.fbx" id="1_fbx"]
+[ext_resource type="Texture2D" uid="uid://d1oks8786fidi" path="res://Resources/Models/_Demo_SimpleShopInterior_Texture.jpg" id="2_tex"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mat"]
+albedo_texture = ExtResource("2_tex")
+
+[node name="Apple" instance=ExtResource("1_fbx")]
+
+[node name="SI_Food_Organic_Apple_04" parent="." index="0"]
+material_override = SubResource("StandardMaterial3D_mat")

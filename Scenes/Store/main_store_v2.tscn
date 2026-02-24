@@ -1,0 +1,940 @@
+[gd_scene load_steps=30 format=4 uid="uid://bo3hntd6bptuq"]
+
+[ext_resource type="PackedScene" uid="uid://b6px6jm2t4rdh" path="res://Scenes/Player/player.tscn" id="1_player"]
+[ext_resource type="PackedScene" uid="uid://bvutrydllfo5x" path="res://Scenes/Checkout/checkout_counter.tscn" id="3_checkout"]
+[ext_resource type="Script" uid="uid://cfl786u5f08p5" path="res://Scripts/Shelves/shelf.gd" id="3_fdgd0"]
+[ext_resource type="PackedScene" path="res://Scenes/Products/restock_crate.tscn" id="4_crate"]
+[ext_resource type="Texture2D" uid="uid://d1oks8786fidi" path="res://Resources/Models/_Demo_SimpleShopInterior_Texture.jpg" id="4_gisg8"]
+[ext_resource type="PackedScene" path="res://Scenes/Store/store_door.tscn" id="5_door"]
+[ext_resource type="Script" uid="uid://bo1gv2vjswmxy" path="res://Scripts/Shelves/shelf_side.gd" id="5_kumte"]
+[ext_resource type="PackedScene" path="res://Scenes/Customers/customer.tscn" id="6_customer"]
+[ext_resource type="Script" uid="uid://bfdq83ph0gjqc" path="res://Scripts/Store/store_manager.gd" id="7_store_mgr"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/hud.tscn" id="8_hud"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/day_summary.tscn" id="9_summary"]
+[ext_resource type="Script" uid="uid://b0hpnjog2kjtk" path="res://Scripts/Shelves/aisle.gd" id="10_aisle"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/pause_menu.tscn" id="11_pause"]
+[ext_resource type="PackedScene" path="res://Scenes/UI/stock_panel.tscn" id="12_stock"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v2sky"]
+sky_top_color = Color(0.35, 0.5, 0.75, 1)
+sky_horizon_color = Color(0.6, 0.65, 0.72, 1)
+ground_bottom_color = Color(0.18, 0.16, 0.14, 1)
+ground_horizon_color = Color(0.6, 0.65, 0.72, 1)
+
+[sub_resource type="Sky" id="Sky_v2"]
+sky_material = SubResource("ProceduralSkyMaterial_v2sky")
+
+[sub_resource type="Environment" id="Environment_v2"]
+background_mode = 2
+sky = SubResource("Sky_v2")
+ambient_light_source = 2
+ambient_light_color = Color(0.85, 0.82, 0.78, 1)
+ambient_light_energy = 0.4
+tonemap_mode = 2
+ssao_enabled = true
+glow_enabled = true
+glow_intensity = 0.6
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_v2"]
+vertices = PackedVector3Array(-4.5, 0.3, -8.5, -4.5, 0.3, -12, -5, 0.3, -12.25, -6.25, 0.3, -8.25, -15.5, 0.3, -3, -10.25, 0.3, -3.25, -10, 0.3, -8.5, -7.75, 0.3, -8.25, -7.75, 0.3, -3.75, -6.25, 0.3, -3.75, -5, 0.3, -15.5, -15.5, 0.3, -15.5, 3.75, 0.3, -1.5, 5.75, 0.3, 1.25, 6, 0.3, 0.75, 4.25, 0.3, -1.75, 9.75, 0.3, 0.75, 4.25, 0.3, -8.25, 3, 0.3, -12.25, 2.5, 0.3, -12, 2.5, 0.3, -8.5, 3, 0.3, -15.5, 15.5, 0.3, 0.5, 15.5, 0.3, -15.5, -3.25, 0.3, -14.25, -3.25, 0.3, -13.75, -2.75, 0.3, -13.75, -2.75, 0.3, -14.25, -1.25, 0.3, -14.25, -1.25, 0.3, -13.75, -0.75, 0.3, -13.75, -0.75, 0.3, -14.25, 0.75, 0.3, -14.25, 0.75, 0.3, -13.75, 1.25, 0.3, -13.75, 1.25, 0.3, -14.25, -3.75, 0.3, -8.25, -2, 0.3, -8.5, 1.75, 0.3, -8.25, 0.25, 0.3, -8.25, -3.75, 0.3, -3.75, -2.25, 0.3, -3.75, 0.25, 0.3, -3.75, 1.75, 0.3, -3.75, -9.25, 2.05, -7.5, -9.25, 2.05, -2.5, -8.75, 2.05, -2.5, -8.75, 2.05, -7.5, -5.25, 2.05, -7.5, -5.25, 2.05, -2.5, -4.75, 2.05, -2.5, -4.75, 2.05, -7.5, -1.25, 2.05, -7.5, -1.25, 2.05, -2.5, -0.75, 2.05, -2.5, -0.75, 2.05, -7.5, 2.75, 2.05, -7.5, 2.75, 2.05, -2.5, 3.25, 2.05, -2.5, 3.25, 2.05, -7.5, 0, 0.3, 15.5, 0, 0.3, 13.75, -1.25, 0.3, 13.75, -15.5, 0.3, 15.5, -6.25, 0.3, -1.75, -8, 0.3, -1.5, -1.5, 0.3, 12.75, -10, 0.3, -1.5, -4.25, 0.3, -1.5, 1.75, 0.3, -1.75, 0, 0.3, -1.5, -1.25, 0.3, 12.25, -3.75, 0.3, -1.75, -2, 0.3, -1.5, 1.25, 0.3, 12.25, 5.75, 0.3, 6.25, 6, 0.3, 2.75, 6, 0.3, 4.75, 8.75, 0.3, 4.75, 9, 0.3, 3.25, 10.25, 0.3, 5, 10.25, 0.3, 3, 15.5, 0.3, 7.5, 10.25, 0.3, 7, 9.75, 0.3, 7.25, 10.25, 0.3, 1, 8.75, 1.05, 1.75, 8.75, 1.3, 2.25, 9.25, 1.3, 2.25, 9.25, 1.05, 1.75, 8.75, 1.05, 5.75, 8.75, 1.3, 6.25, 9.25, 1.3, 6.25, 9.25, 1.05, 5.75, 1.75, 0.3, 13.5, 7.5, 0.3, 15.5, 6, 0.3, 6.75, 1.75, 0.3, 12.5, 7.75, 0.3, 7, 15.5, 0.3, 15.5)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(6, 5, 4), PackedInt32Array(3, 9, 7), PackedInt32Array(7, 9, 8), PackedInt32Array(10, 6, 11), PackedInt32Array(11, 6, 4), PackedInt32Array(7, 6, 3), PackedInt32Array(3, 6, 2), PackedInt32Array(2, 6, 10), PackedInt32Array(15, 14, 12), PackedInt32Array(12, 14, 13), PackedInt32Array(14, 15, 16), PackedInt32Array(16, 15, 17), PackedInt32Array(19, 18, 20), PackedInt32Array(20, 18, 17), PackedInt32Array(18, 21, 17), PackedInt32Array(17, 21, 23), PackedInt32Array(17, 23, 16), PackedInt32Array(16, 23, 22), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25), PackedInt32Array(31, 30, 28), PackedInt32Array(28, 30, 29), PackedInt32Array(35, 34, 32), PackedInt32Array(32, 34, 33), PackedInt32Array(36, 0, 37), PackedInt32Array(37, 0, 1), PackedInt32Array(38, 39, 20), PackedInt32Array(20, 39, 37), PackedInt32Array(20, 37, 19), PackedInt32Array(19, 37, 1), PackedInt32Array(40, 36, 41), PackedInt32Array(41, 36, 37), PackedInt32Array(38, 43, 39), PackedInt32Array(39, 43, 42), PackedInt32Array(47, 46, 44), PackedInt32Array(44, 46, 45), PackedInt32Array(51, 50, 48), PackedInt32Array(48, 50, 49), PackedInt32Array(55, 54, 52), PackedInt32Array(52, 54, 53), PackedInt32Array(59, 58, 56), PackedInt32Array(56, 58, 57), PackedInt32Array(61, 60, 62), PackedInt32Array(62, 60, 63), PackedInt32Array(9, 64, 8), PackedInt32Array(8, 64, 65), PackedInt32Array(67, 65, 66), PackedInt32Array(64, 68, 65), PackedInt32Array(65, 68, 66), PackedInt32Array(4, 5, 67), PackedInt32Array(62, 63, 66), PackedInt32Array(66, 63, 67), PackedInt32Array(67, 63, 4), PackedInt32Array(43, 69, 42), PackedInt32Array(42, 69, 70), PackedInt32Array(71, 66, 68), PackedInt32Array(40, 41, 72), PackedInt32Array(72, 41, 73), PackedInt32Array(74, 71, 75), PackedInt32Array(75, 71, 76), PackedInt32Array(76, 71, 73), PackedInt32Array(73, 71, 68), PackedInt32Array(68, 72, 73), PackedInt32Array(78, 77, 79), PackedInt32Array(79, 77, 76), PackedInt32Array(73, 70, 76), PackedInt32Array(76, 77, 75), PackedInt32Array(69, 12, 70), PackedInt32Array(70, 12, 13), PackedInt32Array(70, 13, 76), PackedInt32Array(79, 81, 78), PackedInt32Array(78, 81, 80), PackedInt32Array(81, 22, 80), PackedInt32Array(80, 22, 82), PackedInt32Array(82, 84, 83), PackedInt32Array(85, 16, 22), PackedInt32Array(82, 83, 80), PackedInt32Array(81, 85, 22), PackedInt32Array(89, 88, 86), PackedInt32Array(86, 88, 87), PackedInt32Array(93, 92, 90), PackedInt32Array(90, 92, 91), PackedInt32Array(61, 94, 60), PackedInt32Array(60, 94, 95), PackedInt32Array(97, 74, 96), PackedInt32Array(96, 74, 75), PackedInt32Array(94, 97, 95), PackedInt32Array(95, 97, 96), PackedInt32Array(95, 96, 98), PackedInt32Array(95, 98, 84), PackedInt32Array(82, 99, 84), PackedInt32Array(84, 99, 95)]
+agent_height = 1.8
+agent_radius = 0.4
+agent_max_climb = 0.3
+
+[sub_resource type="GDScript" id="GDScript_nav_bake"]
+script/source = "extends NavigationRegion3D
+
+func _ready() -> void:
+	await get_tree().physics_frame
+	bake_navigation_mesh()
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor_v2"]
+size = Vector3(32, 0.2, 32)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor_v2"]
+size = Vector3(32, 0.2, 32)
+
+[sub_resource type="StandardMaterial3D" id="Material_floor_v2"]
+albedo_color = Color(0.82, 0.79, 0.72, 1)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_lv1ky"]
+data = PackedVector3Array(0.0337, 0.036399998, 0.015, 0.0337, 0.035, 0.015, -0.0337, 0.035, 0.015, -0.0337, 0.035, 0.015, -0.0337, 0.036399998, 0.015, 0.0337, 0.036399998, 0.015, 0.0337, 0.036399998, -0.015, 0.0337, 0.036399998, 0.015, -0.0337, 0.036399998, 0.015, -0.0337, 0.036399998, 0.015, -0.0337, 0.036399998, -0.015, 0.0337, 0.036399998, -0.015, 0.0337, 0.035, -0.015, 0.0337, 0.036399998, -0.015, -0.0337, 0.036399998, -0.015, -0.0337, 0.036399998, -0.015, -0.0337, 0.035, -0.015, 0.0337, 0.035, -0.015, 0.0337, 0.035, 0.015, 0.0337, 0.035, -0.015, -0.0337, 0.035, -0.015, -0.0337, 0.035, -0.015, -0.0337, 0.035, 0.015, 0.0337, 0.035, 0.015, 0.0337, 0.036399998, -0.015, 0.0337, 0.035, -0.015, 0.0337, 0.035, 0.015, 0.0337, 0.035, 0.015, 0.0337, 0.036399998, 0.015, 0.0337, 0.036399998, -0.015, -0.0337, 0.036399998, 0.015, -0.0337, 0.035, 0.015, -0.0337, 0.035, -0.015, -0.0337, 0.035, -0.015, -0.0337, 0.036399998, -0.015, -0.0337, 0.036399998, 0.015, 0.034399997, 0.0053, -0.017199999, 0.034399997, 0.0053, 0.017199999, -0.034399997, 0.0053, 0.017199999, -0.034399997, 0.0053, 0.017199999, -0.034399997, 0.0053, -0.017199999, 0.034399997, 0.0053, -0.017199999, 0.034399997, 0.0037, -0.017199999, 0.034399997, 0.0053, -0.017199999, -0.034399997, 0.0053, -0.017199999, -0.034399997, 0.0053, -0.017199999, -0.034399997, 0.0037, -0.017199999, 0.034399997, 0.0037, -0.017199999, 0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0037, 0.017199999, -0.034399997, 0.0037, 0.017199999, -0.034399997, 0.0037, 0.017199999, -0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0037, -0.0158, 0.034399997, 0.0037, -0.017199999, -0.034399997, 0.0037, -0.017199999, -0.034399997, 0.0037, -0.017199999, -0.034399997, 0.0037, -0.0158, 0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, 0.0158, -0.034399997, 0.0037, 0.017199999, 0.034399997, 0.0037, 0.017199999, 0.034399997, 0.0037, 0.017199999, 0.034399997, 0.0037, 0.0158, -0.034399997, 0.0037, 0.0158, 0.034399997, 0, -0.0158, 0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0, -0.0158, 0.034399997, 0, -0.0158, -0.034399997, 0, 0.0158, -0.034399997, 0.0037, 0.0158, 0.034399997, 0.0037, 0.0158, 0.034399997, 0.0037, 0.0158, 0.034399997, 0, 0.0158, -0.034399997, 0, 0.0158, -0.034399997, 0.0037, 0.017199999, -0.034399997, 0.0037, 0.0158, -0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0037, 0.017199999, 0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0037, 0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, -0.017199999, -0.034399997, 0.0053, -0.017199999, -0.034399997, 0, -0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, 0.0158, -0.034399997, 0.0037, 0.0158, -0.034399997, 0, 0.0158, -0.034399997, 0, -0.0158, 0.034399997, 0, 0.0158, 0.034399997, 0.0037, 0.0158, 0.034399997, 0.0037, -0.0158, 0.034399997, 0.0037, -0.0158, 0.034399997, 0, -0.0158, 0.034399997, 0, 0.0158, 0.034399997, 0.0037, -0.017199999, 0.034399997, 0.0037, -0.0158, 0.034399997, 0.0053, -0.017199999, 0.034399997, 0.0037, -0.0158, 0.034399997, 0.0037, 0.0158, 0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0053, 0.017199999, 0.034399997, 0.0053, -0.017199999, 0.034399997, 0.0037, -0.0158, -0.034399997, 0.0053, 0.017199999, -0.034399997, 0.0037, 0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0.0037, -0.0158, -0.034399997, 0.0053, -0.017199999, -0.034399997, 0.0053, 0.017199999, 0.0335, 0.0367, 0.0019999999, 0.0335, 0.0042999997, 0.0019999999, -0.0337, 0.0042999997, 0.0019999999, -0.0337, 0.0042999997, 0.0019999999, -0.0337, 0.0367, 0.0019999999, 0.0335, 0.0367, 0.0019999999, 0.0335, 0.042799998, -0.0011, 0.0335, 0.042799998, 0.0011, -0.0337, 0.042799998, 0.0011, -0.0337, 0.042799998, 0.0011, -0.0337, 0.042799998, -0.0011, 0.0335, 0.042799998, -0.0011, 0.0335, 0.0042999997, -0.0019999999, 0.0335, 0.0367, -0.0019999999, -0.0337, 0.0367, -0.0019999999, -0.0337, 0.0367, -0.0019999999, -0.0337, 0.0042999997, -0.0019999999, 0.0335, 0.0042999997, -0.0019999999, 0.0335, 0.0042999997, 0.0019999999, 0.0335, 0.0042999997, -0.0019999999, -0.0337, 0.0042999997, -0.0019999999, -0.0337, 0.0042999997, -0.0019999999, -0.0337, 0.0042999997, 0.0019999999, 0.0335, 0.0042999997, 0.0019999999, 0.0335, 0.0367, -0.0019999999, 0.0335, 0.0042999997, -0.0019999999, 0.0335, 0.0042999997, 0.0019999999, 0.0335, 0.0042999997, 0.0019999999, 0.0335, 0.0367, 0.0019999999, 0.0335, 0.0367, -0.0019999999, -0.0337, 0.0042999997, 0.0019999999, -0.0337, 0.0042999997, -0.0019999999, -0.0337, 0.0367, -0.0019999999, -0.0337, 0.0367, -0.0019999999, -0.0337, 0.0367, 0.0019999999, -0.0337, 0.0042999997, 0.0019999999, -0.0337, 0.0367, 0.0019999999, -0.0337, 0.0367, -0.0019999999, -0.0337, 0.042799998, -0.0011, -0.0337, 0.042799998, -0.0011, -0.0337, 0.042799998, 0.0011, -0.0337, 0.0367, 0.0019999999, 0.0335, 0.0367, -0.0019999999, 0.0335, 0.042799998, -0.0011, -0.0337, 0.042799998, -0.0011, -0.0337, 0.042799998, -0.0011, -0.0337, 0.0367, -0.0019999999, 0.0335, 0.0367, -0.0019999999, 0.0335, 0.042799998, -0.0011, 0.0335, 0.0367, -0.0019999999, 0.0335, 0.0367, 0.0019999999, 0.0335, 0.0367, 0.0019999999, 0.0335, 0.042799998, 0.0011, 0.0335, 0.042799998, -0.0011, 0.0335, 0.042799998, 0.0011, 0.0335, 0.0367, 0.0019999999, -0.0337, 0.0367, 0.0019999999, -0.0337, 0.0367, 0.0019999999, -0.0337, 0.042799998, 0.0011, 0.0335, 0.042799998, 0.0011, 0.0337, 0.025999999, 0.015, 0.0337, 0.0246, 0.015, -0.0337, 0.0246, 0.015, -0.0337, 0.0246, 0.015, -0.0337, 0.025999999, 0.015, 0.0337, 0.025999999, 0.015, 0.0337, 0.025999999, -0.015, 0.0337, 0.025999999, 0.015, -0.0337, 0.025999999, 0.015, -0.0337, 0.025999999, 0.015, -0.0337, 0.025999999, -0.015, 0.0337, 0.025999999, -0.015, 0.0337, 0.0246, -0.015, 0.0337, 0.025999999, -0.015, -0.0337, 0.025999999, -0.015, -0.0337, 0.025999999, -0.015, -0.0337, 0.0246, -0.015, 0.0337, 0.0246, -0.015, 0.0337, 0.0246, 0.015, 0.0337, 0.0246, -0.015, -0.0337, 0.0246, -0.015, -0.0337, 0.0246, -0.015, -0.0337, 0.0246, 0.015, 0.0337, 0.0246, 0.015, 0.0337, 0.025999999, -0.015, 0.0337, 0.0246, -0.015, 0.0337, 0.0246, 0.015, 0.0337, 0.0246, 0.015, 0.0337, 0.025999999, 0.015, 0.0337, 0.025999999, -0.015, -0.0337, 0.025999999, 0.015, -0.0337, 0.0246, 0.015, -0.0337, 0.0246, -0.015, -0.0337, 0.0246, -0.015, -0.0337, 0.025999999, -0.015, -0.0337, 0.025999999, 0.015, 0.0337, 0.0157, 0.015, 0.0337, 0.0142, 0.015, -0.0337, 0.0142, 0.015, -0.0337, 0.0142, 0.015, -0.0337, 0.0157, 0.015, 0.0337, 0.0157, 0.015, 0.0337, 0.0157, -0.015, 0.0337, 0.0157, 0.015, -0.0337, 0.0157, 0.015, -0.0337, 0.0157, 0.015, -0.0337, 0.0157, -0.015, 0.0337, 0.0157, -0.015, 0.0337, 0.0142, -0.015, 0.0337, 0.0157, -0.015, -0.0337, 0.0157, -0.015, -0.0337, 0.0157, -0.015, -0.0337, 0.0142, -0.015, 0.0337, 0.0142, -0.015, 0.0337, 0.0142, 0.015, 0.0337, 0.0142, -0.015, -0.0337, 0.0142, -0.015, -0.0337, 0.0142, -0.015, -0.0337, 0.0142, 0.015, 0.0337, 0.0142, 0.015, 0.0337, 0.0157, -0.015, 0.0337, 0.0142, -0.015, 0.0337, 0.0142, 0.015, 0.0337, 0.0142, 0.015, 0.0337, 0.0157, 0.015, 0.0337, 0.0157, -0.015, -0.0337, 0.0157, 0.015, -0.0337, 0.0142, 0.015, -0.0337, 0.0142, -0.015, -0.0337, 0.0142, -0.015, -0.0337, 0.0157, -0.015, -0.0337, 0.0157, 0.015, -0.034199998, 0.0372, 0.0165, -0.034199998, 0.0042999997, 0.0165, -0.034199998, 0.0042999997, -0.0165, -0.034199998, 0.0042999997, -0.0165, -0.034199998, 0.0372, -0.0165, -0.034199998, 0.0372, 0.0165, -0.0332, 0.0042999997, 0.0165, -0.0332, 0.0372, 0.0165, -0.0332, 0.0372, -0.0165, -0.0332, 0.0372, -0.0165, -0.0332, 0.0042999997, -0.0165, -0.0332, 0.0042999997, 0.0165, -0.0332, 0.0372, 0.0165, -0.0332, 0.0042999997, 0.0165, -0.034199998, 0.0042999997, 0.0165, -0.034199998, 0.0042999997, 0.0165, -0.034199998, 0.0372, 0.0165, -0.0332, 0.0372, 0.0165, -0.034199998, 0.0372, -0.0165, -0.034199998, 0.0042999997, -0.0165, -0.0332, 0.0042999997, -0.0165, -0.0332, 0.0042999997, -0.0165, -0.0332, 0.0372, -0.0165, -0.034199998, 0.0372, -0.0165, -0.0332, 0.0372, 0.0165, -0.034199998, 0.0372, 0.0165, -0.034199998, 0.0372, -0.0165, -0.034199998, 0.0372, -0.0165, -0.0332, 0.0372, -0.0165, -0.0332, 0.0372, 0.0165, 0.033099998, 0.0372, 0.0165, 0.033099998, 0.0042999997, 0.0165, 0.033099998, 0.0042999997, -0.0165, 0.033099998, 0.0042999997, -0.0165, 0.033099998, 0.0372, -0.0165, 0.033099998, 0.0372, 0.0165, 0.034199998, 0.0042999997, 0.0165, 0.034199998, 0.0372, 0.0165, 0.034199998, 0.0372, -0.0165, 0.034199998, 0.0372, -0.0165, 0.034199998, 0.0042999997, -0.0165, 0.034199998, 0.0042999997, 0.0165, 0.034199998, 0.0372, 0.0165, 0.034199998, 0.0042999997, 0.0165, 0.033099998, 0.0042999997, 0.0165, 0.033099998, 0.0042999997, 0.0165, 0.033099998, 0.0372, 0.0165, 0.034199998, 0.0372, 0.0165, 0.033099998, 0.0372, -0.0165, 0.033099998, 0.0042999997, -0.0165, 0.034199998, 0.0042999997, -0.0165, 0.034199998, 0.0042999997, -0.0165, 0.034199998, 0.0372, -0.0165, 0.033099998, 0.0372, -0.0165, 0.034199998, 0.0372, 0.0165, 0.033099998, 0.0372, 0.0165, 0.033099998, 0.0372, -0.0165, 0.033099998, 0.0372, -0.0165, 0.034199998, 0.0372, -0.0165, 0.034199998, 0.0372, 0.0165)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k200x"]
+albedo_texture = ExtResource("4_gisg8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vgyry"]
+resource_name = "lambert1"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 0.8)
+emission_enabled = true
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_km4xm"]
+_surfaces = [{
+"aabb": AABB(-0.034403473, 0, -0.01720172, 0.06880695, 0.042769723, 0.034403473),
+"format": 34359742465,
+"index_count": 306,
+"index_data": PackedByteArray("AAABAAIAAgADAAAAAQAAAAQABAAAAAMABQACAAEAAwACAAUABAAGAAEAAQAGAAUAAwAHAAQABgAEAAcABQAHAAMABwAFAAYACAAJAAoACwAKAAkACQAMAAsACwANAAoADQALAAwADAAJAA4ADAAOAA0ACQAIAA8ADwAOAAkACgAQAAgAEQAIABAAEQAPAAgAEAASABEADwARABIAEwASABAAEwAQAAoAEgATAA8ACgANABMAFAAOAA8ADgAUABUAFQANAA4ADwAWABQAFgAPABMADQAVABcAEwAXABYAFwATAA0AGAAZABoAGwAaABkAGQAcABsAGgAbAB0AHQAbABwAHgAcABkAHAAeAB0AGQAYAB4AHQAfABoAGgAfABgAHwAdACAAIAAdAB4AIQAYAB8AIAAiAB8AHwAiACEAHgAjACAAIgAgACMAIwAeABgAIwAhACIAGAAhACMAJAAlACYAJgAnACQAJQAkACgAKAAkACcAKQAmACUAJwAmACkAKAAqACUAJQAqACkAJwArACgAKgAoACsAKQArACcAKwApACoALAAtAC4ALgAvACwALQAsADAAMAAsAC8AMQAuAC0ALwAuADEAMAAyAC0ALQAyADEALwAzADAAMgAwADMAMQAzAC8AMwAxADIANAA1ADYANQA0ADcANwA4ADUANgA5ADQANwA0ADkAOQA2ADoAOAA3ADsAOQA7ADcAOwA6ADgAOgA7ADkAPAA9AD4APQA8AD8APwBAAD0APgBBADwAPwA8AEEAQQA+AEIAQAA/AEMAQQBDAD8AQwBCAEAAQgBDAEEA"),
+"name": "lambert1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 68,
+"vertex_data": PackedByteArray("8d0JPQ8pFT0O+3U88d0JPZg9Dz0O+3U8kSsKvZg9Dz0O+3U8kSsKvQ8pFT0O+3U88d0JPQ8pFT3j+nW8kSsKvZg9Dz3j+nW88d0JPZg9Dz3j+nW8kSsKvQ8pFT3j+nW8qeoMPaaarTuf6oy8qeoMPaaarTuw6ow8qOoMvaaarTuw6ow8qOoMvel6dDuw6ow8qeoMPel6dDuw6ow8qOoMvel6dDueo4E8qeoMPel6dDueo4E8qeoMPel6dDuLo4G8qOoMvaaarTuf6oy8qeoMPel6dDuf6oy8qOoMvel6dDuf6oy8qOoMvel6dDuLo4G8qeoMPanqjBmeo4E8qOoMvQAAAACeo4E8qeoMPanqjBmLo4G8qOoMvQAAAACLo4G8plsJPYFNFj1NFgA7plsJPf3AiztNFgA7JAMKvf3AiztNFgA7JAMKvfzAizvIFQC7plsJPfzAizvIFQC7JAMKvYFNFj3IFQC7plsJPYFNFj3IFQC7JAMKvYFNFj1NFgA7JAMKvU4vLz2AW5K6plsJPU4vLz2KXJI6JAMKvU4vLz2KXJI6plsJPU4vLz2AW5K68d0JPW1Y1TwO+3U88d0JPX+ByTwO+3U8gCsKvX+ByTwO+3U8gCsKvW1Y1TwO+3U88d0JPW1Y1Tzj+nW8gCsKvX+ByTzj+nW88d0JPX+ByTzj+nW8gCsKvW1Y1Tzj+nW88d0JPbxegDwO+3U88d0JPZsPaTwO+3U8gCsKvZsPaTwO+3U8gCsKvbxegDwO+3U88d0JPbxegDzj+nW8gCsKvZsPaTzj+nW88d0JPZsPaTzj+nW8gCsKvbxegDzj+nW8qUEMvWtXGD3hhYc8qUEMvfzAizvhhYc8qUEMvfzAizvNhYe87u0HvWtXGD3hhYc87u0HvfzAizvhhYc8qUEMvWtXGD3NhYe87u0HvfzAizvNhYe87u0HvWtXGD3NhYe8oaMHPYNWGD3hhYc8oaMHPfzAizvhhYc8oaMHPfzAizvNhYe8WvcLPYNWGD3hhYc8WvcLPfzAizvhhYc8oaMHPYNWGD3NhYe8WvcLPfzAizvNhYe8WvcLPYNWGD3NhYe8")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_xf7ho"]
+resource_name = "SI_Prop_Shelf_Isle_Empty_01"
+_surfaces = [{
+"aabb": AABB(-0.034403473, 0, -0.01720172, 0.06880695, 0.042769723, 0.034403473),
+"attribute_data": PackedByteArray("oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT84Iu8+MGtxP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/gGPKPuj1bz+AY8o+6PVvP4Bjyj7o9W8/gGPKPuj1bz+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/OCLvPi5rcT84Iu8+LmtxPzgi7z4ua3E/OCLvPi5rcT8AaLg+VOJwPwBouD5U4nA/AGi4PlTicD8AaLg+VOJwPwBouD5U4nA/AGi4PlTicD8AaLg+VOJwPwBouD5U4nA/AFprPkvlcD8AWms+S+VwP+BZaz5L5XA/4FlrPkvlcD/gWWs+S+VwP+BZaz5L5XA/AFprPkvlcD8AWms+S+VwPwBkvD4wKHE/AGS8PjAocT8AZLw+MChxPwBkvD4wKHE/AGS8PjAocT8AZLw+MChxPwBkvD4wKHE/AGS8PjAocT+gnIs+DeJwP6Cciz4N4nA/oJyLPg3icD8TmKg+QuJwPxOYqD5C4nA/E5ioPkLicD+gnIs+DeJwP6Cciz4N4nA/oJyLPg3icD9Au4Y+BqdwP0C7hj4Gp3A/QLuGPgancD9Au4Y+BqdwP0C7hj4Gp3A/QLuGPgancD9Au4Y+BqdwP0C7hj4Gp3A/oJyLPg3icD+gnIs+DeJwP6Cciz4N4nA/oJyLPg3icD+gnIs+DeJwP6Cciz4N4nA/oJyLPg3icD+gnIs+DeJwP6Cciz4N4nA/oJyLPg3icD+gnIs+DeJwP7UkqT7o9W8/tSSpPuf1bz+tJKk+5/VvP60kqT7o9W8/ZePNPjBrcT9l480+MGtxP2XjzT4wa3E/ZePNPjBrcT+1JKk+5/VvP7UkqT7o9W8/rSSpPuj1bz+tJKk+5/VvP7UkqT7n9W8/tSSpPuf1bz+tJKk+5/VvP60kqT7n9W8/tSSpPuj1bz+1JKk+5/VvP7UkqT7n9W8/tSSpPuj1bz+tJKk+5/VvP60kqT7n9W8/rSSpPuj1bz+tJKk+6PVvP107gz7o9W8/XTuDPuj1bz9dO4M+6PVvP107gz7o9W8/1U64PoggcT/VTrg+iCBxP9VOuD6IIHE/1U64PoggcT9dO4M+6PVvP107gz7o9W8/XTuDPuj1bz9dO4M+6PVvP9VOuD6IIHE/1U64PoggcT/VTrg+iCBxP9VOuD6IIHE/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT84Iu8+MGtxP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/OCLvPjBrcT84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT84Iu8+MGtxP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/OCLvPjBrcT84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/oDqYPprncD+gOpg+mudwP6A6mD6a53A/MHqkPuj1bz8weqQ+5vVvPzB6pD7m9W8/MHqkPuj1bz8weqQ+5vVvPzB6pD7o9W8/MHqkPuj1bz8weqQ+5vVvP6iN2T6IIHE/qI3ZPocgcT+ojdk+hyBxP6iN2T6IIHE/qI3ZPoggcT+ojdk+hyBxP6iN2T6HIHE/qI3ZPoggcT84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT84Iu8+MGtxPzB6pD7o9W8/MHqkPub1bz8weqQ+5vVvPzB6pD7o9W8/MHqkPub1bz8weqQ+6PVvPzB6pD7o9W8/MHqkPub1bz+ojdk+iCBxP6iN2T6HIHE/qI3ZPocgcT+ojdk+iCBxP6iN2T6IIHE/qI3ZPocgcT+ojdk+hyBxP6iN2T6IIHE/OCLvPjBrcT84Iu8+MGtxPzgi7z4wa3E/OCLvPjBrcT8="),
+"format": 34359742487,
+"index_count": 306,
+"index_data": PackedByteArray("AAABAAIAAgADAAAABAAFAAYABgAHAAQACAAJAAoACgALAAgADAANAA4ADgAPAAwAEAARABIAEgATABAAFAAVABYAFgAXABQAGAAZABoAGgAbABgAHAAdAB4AHgAfABwAIAAhACIAIgAjACAAJAAlACYAJgAnACQAKAApACoAKgArACgALAAtAC4ALgAvACwAMAAxADIAMgAzADAANAA1ADYANwA4ADkAOgA7ADwAPQA+AD8APwBAAD0AQQBCAEMAQwBEAEEARQBGAEcASABJAEoASgBLAEgATABNAE4ATgBPAEwAUABRAFIAUgBTAFAAVABVAFYAVgBXAFQAWABZAFoAWgBbAFgAXABdAF4AXgBfAFwAYABhAGIAYgBjAGAAZABlAGYAZgBnAGQAaABpAGoAagBrAGgAbABtAG4AbgBvAGwAcABxAHIAcgBzAHAAdAB1AHYAdgB3AHQAeAB5AHoAegB7AHgAfAB9AH4AfgB/AHwAgACBAIIAggCDAIAAhACFAIYAhgCHAIQAiACJAIoAigCLAIgAjACNAI4AjgCPAIwAkACRAJIAkgCTAJAAlACVAJYAlgCXAJQAmACZAJoAmgCbAJgAnACdAJ4AngCfAJwAoAChAKIAogCjAKAApAClAKYApgCnAKQAqACpAKoAqgCrAKgArACtAK4ArgCvAKwAsACxALIAsgCzALAAtAC1ALYAtgC3ALQAuAC5ALoAugC7ALgAvAC9AL4AvgC/ALwAwADBAMIAwgDDAMAAxADFAMYAxgDHAMQAyADJAMoAygDLAMgAzADNAM4AzgDPAMwA"),
+"material": SubResource("StandardMaterial3D_vgyry"),
+"name": "lambert1",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 208,
+"vertex_data": PackedByteArray("8d0JPQ8pFT0O+3U88d0JPZg9Dz0O+3U8kSsKvZg9Dz0O+3U8kSsKvQ8pFT0O+3U88d0JPQ8pFT3j+nW88d0JPQ8pFT0O+3U8kSsKvQ8pFT0O+3U8kSsKvQ8pFT3j+nW88d0JPZg9Dz3j+nW88d0JPQ8pFT3j+nW8kSsKvQ8pFT3j+nW8kSsKvZg9Dz3j+nW88d0JPZg9Dz0O+3U88d0JPZg9Dz3j+nW8kSsKvZg9Dz3j+nW8kSsKvZg9Dz0O+3U88d0JPQ8pFT3j+nW88d0JPZg9Dz3j+nW88d0JPZg9Dz0O+3U88d0JPQ8pFT0O+3U8kSsKvQ8pFT0O+3U8kSsKvZg9Dz0O+3U8kSsKvZg9Dz3j+nW8kSsKvQ8pFT3j+nW8qeoMPaaarTuf6oy8qeoMPaaarTuw6ow8qOoMvaaarTuw6ow8qOoMvaaarTuf6oy8qeoMPel6dDuf6oy8qeoMPaaarTuf6oy8qOoMvaaarTuf6oy8qOoMvel6dDuf6oy8qeoMPaaarTuw6ow8qeoMPel6dDuw6ow8qOoMvel6dDuw6ow8qOoMvaaarTuw6ow8qeoMPel6dDuLo4G8qeoMPel6dDuf6oy8qOoMvel6dDuf6oy8qOoMvel6dDuLo4G8qOoMvel6dDueo4E8qOoMvel6dDuw6ow8qeoMPel6dDuw6ow8qeoMPel6dDueo4E8qeoMPanqjBmLo4G8qeoMPel6dDuLo4G8qOoMvel6dDuLo4G8qOoMvQAAAACLo4G8qOoMvQAAAACeo4E8qOoMvel6dDueo4E8qeoMPel6dDueo4E8qeoMPanqjBmeo4E8qOoMvel6dDuw6ow8qOoMvel6dDueo4E8qOoMvaaarTuw6ow8qeoMPel6dDuw6ow8qeoMPaaarTuw6ow8qeoMPel6dDueo4E8qOoMvel6dDuLo4G8qOoMvel6dDuf6oy8qOoMvaaarTuf6oy8qOoMvQAAAACLo4G8qOoMvel6dDuLo4G8qOoMvel6dDueo4E8qOoMvQAAAACeo4E8qeoMPanqjBmeo4E8qeoMPel6dDueo4E8qeoMPel6dDuLo4G8qeoMPanqjBmLo4G8qeoMPel6dDuf6oy8qeoMPel6dDuLo4G8qeoMPaaarTuf6oy8qeoMPel6dDuLo4G8qeoMPel6dDueo4E8qeoMPaaarTuw6ow8qeoMPaaarTuf6oy8qOoMvaaarTuw6ow8qOoMvel6dDueo4E8qOoMvel6dDuLo4G8qOoMvaaarTuf6oy8plsJPYFNFj1NFgA7plsJPf3AiztNFgA7JAMKvf3AiztNFgA7JAMKvYFNFj1NFgA7plsJPU4vLz2AW5K6plsJPU4vLz2KXJI6JAMKvU4vLz2KXJI6JAMKvU4vLz2AW5K6plsJPfzAizvIFQC7plsJPYFNFj3IFQC7JAMKvYFNFj3IFQC7JAMKvfzAizvIFQC7plsJPf3AiztNFgA7plsJPfzAizvIFQC7JAMKvfzAizvIFQC7JAMKvf3AiztNFgA7plsJPYFNFj3IFQC7plsJPfzAizvIFQC7plsJPf3AiztNFgA7plsJPYFNFj1NFgA7JAMKvf3AiztNFgA7JAMKvfzAizvIFQC7JAMKvYFNFj3IFQC7JAMKvYFNFj1NFgA7JAMKvYFNFj1NFgA7JAMKvYFNFj3IFQC7JAMKvU4vLz2AW5K6JAMKvU4vLz2KXJI6plsJPYFNFj3IFQC7plsJPU4vLz2AW5K6JAMKvU4vLz2AW5K6JAMKvYFNFj3IFQC7plsJPU4vLz2AW5K6plsJPYFNFj3IFQC7plsJPYFNFj1NFgA7plsJPU4vLz2KXJI6plsJPU4vLz2KXJI6plsJPYFNFj1NFgA7JAMKvYFNFj1NFgA7JAMKvU4vLz2KXJI68d0JPW1Y1TwO+3U88d0JPX+ByTwO+3U8gCsKvX+ByTwO+3U8gCsKvW1Y1TwO+3U88d0JPW1Y1Tzj+nW88d0JPW1Y1TwO+3U8gCsKvW1Y1TwO+3U8gCsKvW1Y1Tzj+nW88d0JPX+ByTzj+nW88d0JPW1Y1Tzj+nW8gCsKvW1Y1Tzj+nW8gCsKvX+ByTzj+nW88d0JPX+ByTwO+3U88d0JPX+ByTzj+nW8gCsKvX+ByTzj+nW8gCsKvX+ByTwO+3U88d0JPW1Y1Tzj+nW88d0JPX+ByTzj+nW88d0JPX+ByTwO+3U88d0JPW1Y1TwO+3U8gCsKvW1Y1TwO+3U8gCsKvX+ByTwO+3U8gCsKvX+ByTzj+nW8gCsKvW1Y1Tzj+nW88d0JPbxegDwO+3U88d0JPZsPaTwO+3U8gCsKvZsPaTwO+3U8gCsKvbxegDwO+3U88d0JPbxegDzj+nW88d0JPbxegDwO+3U8gCsKvbxegDwO+3U8gCsKvbxegDzj+nW88d0JPZsPaTzj+nW88d0JPbxegDzj+nW8gCsKvbxegDzj+nW8gCsKvZsPaTzj+nW88d0JPZsPaTwO+3U88d0JPZsPaTzj+nW8gCsKvZsPaTzj+nW8gCsKvZsPaTwO+3U88d0JPbxegDzj+nW88d0JPZsPaTzj+nW88d0JPZsPaTwO+3U88d0JPbxegDwO+3U8gCsKvbxegDwO+3U8gCsKvZsPaTwO+3U8gCsKvZsPaTzj+nW8gCsKvbxegDzj+nW8qUEMvWtXGD3hhYc8qUEMvfzAizvhhYc8qUEMvfzAizvNhYe8qUEMvWtXGD3NhYe87u0HvfzAizvhhYc87u0HvWtXGD3hhYc87u0HvWtXGD3NhYe87u0HvfzAizvNhYe87u0HvWtXGD3hhYc87u0HvfzAizvhhYc8qUEMvfzAizvhhYc8qUEMvWtXGD3hhYc8qUEMvWtXGD3NhYe8qUEMvfzAizvNhYe87u0HvfzAizvNhYe87u0HvWtXGD3NhYe87u0HvWtXGD3hhYc8qUEMvWtXGD3hhYc8qUEMvWtXGD3NhYe87u0HvWtXGD3NhYe8oaMHPYNWGD3hhYc8oaMHPfzAizvhhYc8oaMHPfzAizvNhYe8oaMHPYNWGD3NhYe8WvcLPfzAizvhhYc8WvcLPYNWGD3hhYc8WvcLPYNWGD3NhYe8WvcLPfzAizvNhYe8WvcLPYNWGD3hhYc8WvcLPfzAizvhhYc8oaMHPfzAizvhhYc8oaMHPYNWGD3hhYc8oaMHPYNWGD3NhYe8oaMHPfzAizvNhYe8WvcLPfzAizvNhYe8WvcLPYNWGD3NhYe8WvcLPYNWGD3hhYc8oaMHPYNWGD3hhYc8oaMHPYNWGD3NhYe8WvcLPYNWGD3NhYe8/3//f////z//f/9/////P/9//3////8//3//f////z//f///////v/9///////+//3///////7//f///////v/////////+//////////7//////////v/////////+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7////9/////v////3////+/////f////7////9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+//3///////7//f///////v/9///////+//3///////7//////////v/////////+//////////7//////////v/9//3////8//3//f////z//f/9/////P/9//3////8//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7//fwAA////v/////////+//////////7//////////v/////////+//3//f////z//f/9/////P/9//3////8//3//f////z8AAP9/////vwAA/3////+/AAD/f////7////9/////v////3////+/////f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////v////3////+/////f////7////9/////v////3////+/////f////7////9/////v////3////+//v//f////7/+//9/////v/7//3////+//v//f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////v/9//3////8//3//f////z//f/9/////P/9//3////8//3///////7//f///////v/9///////+//3///////7//////////v/////////+//////////7//////////v/9/AAD///8//38AAP///z//fwAA////P/9/AAD///8/////f////7////9/////v////3////+/////f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/e/D//////7978P//////v3vw//////+/e/D//////7/+//9/////v/7//3////+//v//f////7/+//9/////v/9/go////8//3+Cj////z//f4KP////P/9/go////8//3//f////z//f/9/////P/9//3////8//3//f////z//f///////v/9///////+//3///////7//f///////v/////////+//////////7//////////v/////////+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7////9/////v////3////+/////f////7////9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+//3//f////z//f/9/////P/9//3////8//3//f////z//f///////v/9///////+//3///////7//f///////v/////////+//////////7//////////v/////////+//38AAP///7//fwAA////v/9/AAD///+//38AAP///7////9/////v////3////+/////f////7////9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/AAD/f////7////9/////v////3////+/////f////7////9/////v/9//3////8//3//f////z//f/9/////P/9//3////8//////////7//////////v/////////+//////////7//f///////v/9///////+//3///////7//f///////vwAA/3////+/AAD/f////78AAP9/////vwAA/3////+/////f////7////9/////v////3////+/////f////7//f/9/////P/9//3////8//3//f////z//f/9/////P/////////+//////////7//////////v/////////+//3///////7//f///////v/9///////+//3///////78=")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_km4xm")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_front"]
+size = Vector3(2, 1.8, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_back"]
+size = Vector3(2, 1.8, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_north"]
+size = Vector3(32, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_north"]
+size = Vector3(32, 3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_south_half"]
+size = Vector3(14, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_south_half"]
+size = Vector3(14, 3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ew"]
+size = Vector3(0.3, 3, 32.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wall_ew"]
+size = Vector3(0.3, 3, 32.3)
+
+[sub_resource type="StandardMaterial3D" id="Material_wall"]
+albedo_color = Color(0.92, 0.9, 0.85, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nwz_checkout"]
+size = Vector3(0.3, 3, 10)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nwz_restock"]
+size = Vector3(13, 3, 0.3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nwz_restock"]
+size = Vector3(13, 3, 0.3)
+
+[node name="MainStoreV2" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_v2")
+
+[node name="SunLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 10, 0)
+light_color = Color(1, 0.96, 0.88, 1)
+light_energy = 1.1
+light_indirect_energy = 0.6
+shadow_enabled = true
+shadow_bias = 0.03
+directional_shadow_max_distance = 50.0
+
+[node name="FillLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660254, -0.43301278, -0.25, 0, 0.49999997, -0.86602545, 0.50000006, 0.75, 0.43301266, 0, 8, 0)
+light_color = Color(0.7, 0.78, 0.95, 1)
+light_energy = 0.3
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_v2")
+script = SubResource("GDScript_nav_bake")
+
+[node name="Floor" type="StaticBody3D" parent="NavigationRegion3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_floor_v2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D/Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_floor_v2")
+surface_material_override/0 = SubResource("Material_floor_v2")
+
+[node name="Player" parent="NavigationRegion3D" instance=ExtResource("1_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 8)
+
+[node name="Aisle_BakeryDairy" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Bakery & Dairy"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -2)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -5)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, -8)
+
+[node name="Shelf_Bakery" type="StaticBody3D" parent="NavigationRegion3D/Aisle_BakeryDairy"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9, 0, -3.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "bakery"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "bakery"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Bakery/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Shelf_Dairy" type="StaticBody3D" parent="NavigationRegion3D/Aisle_BakeryDairy"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -9, 0, -6.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "dairy"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "dairy"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BakeryDairy/Shelf_Dairy/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Aisle_ProduceSnacks" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Produce & Snacks"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -2)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -8)
+
+[node name="Shelf_Produce" type="StaticBody3D" parent="NavigationRegion3D/Aisle_ProduceSnacks"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, -3.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "produce"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "produce"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Produce/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Shelf_Snacks" type="StaticBody3D" parent="NavigationRegion3D/Aisle_ProduceSnacks"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -5, 0, -6.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "snacks"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "snacks"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_ProduceSnacks/Shelf_Snacks/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Aisle_BevDryGoods" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Beverages & Dry Goods"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -2)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -5)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0, -8)
+
+[node name="Shelf_Beverages" type="StaticBody3D" parent="NavigationRegion3D/Aisle_BevDryGoods"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, -3.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "beverages"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "beverages"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_Beverages/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Shelf_DryGoods" type="StaticBody3D" parent="NavigationRegion3D/Aisle_BevDryGoods"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, -6.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "dry_goods"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "dry_goods"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_BevDryGoods/Shelf_DryGoods/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Aisle_Hygiene" type="Node3D" parent="NavigationRegion3D"]
+script = ExtResource("10_aisle")
+aisle_name = "Hygiene"
+
+[node name="Waypoints" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene"]
+
+[node name="WP1" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -2)
+
+[node name="WP2" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -5)
+
+[node name="WP3" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Waypoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, -8)
+
+[node name="Shelf_HygieneL" type="StaticBody3D" parent="NavigationRegion3D/Aisle_Hygiene"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -3.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "hygiene"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "hygiene"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneL/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Shelf_HygieneR" type="StaticBody3D" parent="NavigationRegion3D/Aisle_Hygiene"]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 3, 0, -6.5)
+script = ExtResource("3_fdgd0")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_lv1ky")
+
+[node name="SI_Prop_Shelf_Isle_Empty_01" type="MeshInstance3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR"]
+transform = Transform3D(41.23, 0, 0, 0, 41.23, 0, 0, 0, 41.23, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_k200x")
+mesh = SubResource("ArrayMesh_xf7ho")
+skeleton = NodePath("")
+
+[node name="Sides" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR"]
+
+[node name="Front" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "hygiene"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/InteractionArea"]
+shape = SubResource("BoxShape3D_front")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Front/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="Back" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides"]
+script = ExtResource("5_kumte")
+shelf_tag = "hygiene"
+
+[node name="InteractionArea" type="Area3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, -1)
+collision_layer = 0
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/InteractionArea"]
+shape = SubResource("BoxShape3D_back")
+
+[node name="Slots" type="Node3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -0.4)
+
+[node name="Slot1" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.8, 0, 0)
+
+[node name="Slot2" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
+
+[node name="Slot3" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/Slots"]
+
+[node name="Slot4" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
+
+[node name="Slot5" type="Marker3D" parent="NavigationRegion3D/Aisle_Hygiene/Shelf_HygieneR/Sides/Back/Slots"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8, 0, 0)
+
+[node name="CheckoutCounter1" parent="NavigationRegion3D" instance=ExtResource("3_checkout")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 2)
+
+[node name="CheckoutCounter2" parent="NavigationRegion3D" instance=ExtResource("3_checkout")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 6)
+
+[node name="StoreDoor" parent="NavigationRegion3D" instance=ExtResource("5_door")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13)
+
+[node name="RestockArea" type="Node3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
+
+[node name="Crate_Bread" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, 0)
+product_id = "bread"
+
+[node name="Crate_Milk" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+product_id = "milk"
+
+[node name="Crate_Apple" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+product_id = "apple"
+
+[node name="Crate_Cheese" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+product_id = "cheese"
+
+[node name="Crate_Cereal" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -2)
+product_id = "cereal"
+
+[node name="Crate_Water" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, -2)
+product_id = "water"
+
+[node name="Crate_Chips" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2)
+product_id = "chips"
+
+[node name="Crate_Soap" parent="NavigationRegion3D/RestockArea" instance=ExtResource("4_crate")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2)
+product_id = "soap"
+
+[node name="AisleLights" type="Node3D" parent="NavigationRegion3D"]
+
+[node name="Light_Aisle1" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 3.5, -5)
+light_color = Color(1, 0.97, 0.9, 1)
+light_energy = 0.6
+omni_range = 8.0
+omni_attenuation = 1.5
+
+[node name="Light_Aisle2" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 3.5, -5)
+light_color = Color(1, 0.97, 0.9, 1)
+light_energy = 0.6
+omni_range = 8.0
+omni_attenuation = 1.5
+
+[node name="Light_Aisle3" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 3.5, -5)
+light_color = Color(1, 0.97, 0.9, 1)
+light_energy = 0.6
+omni_range = 8.0
+omni_attenuation = 1.5
+
+[node name="Light_Aisle4" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 3.5, -5)
+light_color = Color(1, 0.97, 0.9, 1)
+light_energy = 0.6
+omni_range = 8.0
+omni_attenuation = 1.5
+
+[node name="Light_Checkout" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 3.5, 4)
+light_color = Color(1, 0.95, 0.85, 1)
+light_energy = 0.8
+omni_range = 10.0
+omni_attenuation = 1.5
+
+[node name="Light_Entrance" type="OmniLight3D" parent="NavigationRegion3D/AisleLights"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 11)
+light_color = Color(0.95, 0.98, 1, 1)
+light_energy = 0.5
+omni_range = 8.0
+omni_attenuation = 1.5
+
+[node name="StoreManager" type="Node3D" parent="."]
+script = ExtResource("7_store_mgr")
+customer_scene = ExtResource("6_customer")
+
+[node name="Entrance" type="Marker3D" parent="StoreManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+
+[node name="Exit" type="Marker3D" parent="StoreManager"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 11)
+
+[node name="CustomerSpawnTimer" type="Timer" parent="StoreManager"]
+one_shot = true
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="HUD" parent="UILayer" instance=ExtResource("8_hud")]
+
+[node name="StockPanel" parent="UILayer" instance=ExtResource("12_stock")]
+layout_mode = 3
+
+[node name="DaySummary" parent="UILayer" instance=ExtResource("9_summary")]
+
+[node name="PauseMenu" parent="UILayer" instance=ExtResource("11_pause")]
