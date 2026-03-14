@@ -1,115 +1,171 @@
-[gd_resource type="Theme" load_steps=11 format=3 uid="uid://b2nf2m4op8ahy"]
+[gd_resource type="Theme" load_steps=14 format=3 uid="uid://b2nf2m4op8ahy"]
 
-[sub_resource type="StyleBoxFlat" id="btn_focus"]
-content_margin_left = 16.0
+[sub_resource type="StyleBoxFlat" id="btn_disabled"]
+content_margin_left = 18.0
 content_margin_top = 10.0
-content_margin_right = 16.0
+content_margin_right = 18.0
 content_margin_bottom = 10.0
-bg_color = Color(0.18, 0.18, 0.24, 0.95)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.4, 0.6, 1, 0.7)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="btn_hover"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
-bg_color = Color(0.22, 0.22, 0.28, 0.95)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="btn_normal"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
-bg_color = Color(0.14, 0.14, 0.18, 0.9)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="btn_pressed"]
-content_margin_left = 16.0
-content_margin_top = 10.0
-content_margin_right = 16.0
-content_margin_bottom = 10.0
-bg_color = Color(0.28, 0.28, 0.36, 0.95)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="separator_style"]
-content_margin_top = 1.0
-content_margin_bottom = 1.0
-bg_color = Color(0.25, 0.25, 0.3, 0.4)
-
-[sub_resource type="StyleBoxFlat" id="slider_fill"]
-bg_color = Color(0.3, 0.55, 0.9, 0.85)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="slider_bg"]
-bg_color = Color(0.12, 0.12, 0.15, 0.8)
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-
-[sub_resource type="StyleBoxFlat" id="panel_bg"]
-content_margin_left = 12.0
-content_margin_top = 8.0
-content_margin_right = 12.0
-content_margin_bottom = 8.0
-bg_color = Color(0.07, 0.07, 0.09, 0.92)
+bg_color = Color(0.1, 0.1, 0.13, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.2, 0.25, 0.3)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="btn_focus"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.16, 0.17, 0.22, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.6, 1, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="btn_hover"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.18, 0.2, 0.26, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.38, 0.55, 0.85, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="btn_normal"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.13, 0.14, 0.18, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.3, 0.38, 0.5)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="btn_pressed"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
+bg_color = Color(0.22, 0.25, 0.34, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.6, 0.9, 0.7)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="separator_style"]
+content_margin_top = 1.0
+content_margin_bottom = 1.0
+bg_color = Color(0.28, 0.3, 0.36, 0.35)
+
+[sub_resource type="StyleBoxFlat" id="slider_fill"]
+bg_color = Color(0.3, 0.55, 0.88, 0.85)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="slider_bg"]
+bg_color = Color(0.12, 0.12, 0.16, 0.8)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="panel_bg"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 14.0
+bg_color = Color(0.08, 0.085, 0.11, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.22, 0.24, 0.3, 0.45)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [sub_resource type="StyleBoxFlat" id="progress_bg"]
-bg_color = Color(0.12, 0.12, 0.15, 0.8)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+bg_color = Color(0.1, 0.1, 0.14, 0.8)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [sub_resource type="StyleBoxFlat" id="progress_fill"]
-bg_color = Color(0.25, 0.7, 0.35, 0.9)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+bg_color = Color(0.25, 0.68, 0.42, 0.9)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="scrollbar_grab"]
+bg_color = Color(0.28, 0.3, 0.38, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="scrollbar_bg"]
+bg_color = Color(0.08, 0.08, 0.1, 0.5)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
 
 [resource]
 default_font_size = 15
-Button/colors/font_color = Color(0.85, 0.85, 0.9, 1)
-Button/colors/font_focus_color = Color(0.9, 0.9, 1, 1)
-Button/colors/font_hover_color = Color(1, 1, 1, 1)
-Button/colors/font_pressed_color = Color(0.7, 0.8, 1, 1)
-Button/font_sizes/font_size = 18
+Button/colors/font_color = Color(0.82, 0.84, 0.9, 1)
+Button/colors/font_disabled_color = Color(0.4, 0.4, 0.45, 0.6)
+Button/colors/font_focus_color = Color(0.88, 0.9, 1, 1)
+Button/colors/font_hover_color = Color(0.95, 0.96, 1, 1)
+Button/colors/font_pressed_color = Color(0.65, 0.78, 1, 1)
+Button/font_sizes/font_size = 16
+Button/styles/disabled = SubResource("btn_disabled")
 Button/styles/focus = SubResource("btn_focus")
 Button/styles/hover = SubResource("btn_hover")
 Button/styles/normal = SubResource("btn_normal")
 Button/styles/pressed = SubResource("btn_pressed")
-HSeparator/constants/separation = 6
+HSeparator/constants/separation = 8
 HSeparator/styles/separator = SubResource("separator_style")
 HSlider/styles/grabber_area = SubResource("slider_fill")
 HSlider/styles/slider = SubResource("slider_bg")
-Label/colors/font_color = Color(0.82, 0.82, 0.86, 1)
+Label/colors/font_color = Color(0.8, 0.82, 0.88, 1)
 Label/font_sizes/font_size = 15
 PanelContainer/styles/panel = SubResource("panel_bg")
 ProgressBar/styles/background = SubResource("progress_bg")
 ProgressBar/styles/fill = SubResource("progress_fill")
+VScrollBar/styles/grabber = SubResource("scrollbar_grab")
+VScrollBar/styles/grabber_highlight = SubResource("scrollbar_grab")
+VScrollBar/styles/grabber_pressed = SubResource("scrollbar_grab")
+VScrollBar/styles/scroll = SubResource("scrollbar_bg")

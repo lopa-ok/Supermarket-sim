@@ -1,196 +1,303 @@
-extends PanelContainer
+extends Control
 
-@onready var stock_list: VBoxContainer = %StockList
-@onready var alert_list: VBoxContainer = %AlertList
+@onready var panel: PanelContainer = $Panel
+@onready var card_container: VBoxContainer = %CardContainer
 
-var _visible_panel: bool = false
-var _product_totals: Dictionary = {}
-var _shelf_max_total: int = 0
-
-const LOW_RATIO := 0.3
-const COL_OK := Color(0.3, 0.9, 0.4)
-const COL_LOW := Color(1.0, 0.85, 0.25)
-const COL_EMPTY := Color(1.0, 0.35, 0.35)
-const COL_TEXT := Color(0.78, 0.78, 0.82)
-const COL_MUTED := Color(0.5, 0.5, 0.55)
+var _panel_open: bool = false
+var _current_tab: int = 0
 
 func _ready() -> void:
-	visible = false
-	EventBus.shelf_stock_changed.connect(_on_shelf_stock_changed)
+	panel.visible = false
+	EventBus.shelf_stock_changed.connect(func(_a, _b, _c, _d, _e): _refresh())
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr:
+		ui_mgr.register_panel("stock", self)
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("toggle_panel"):
-		_toggle()
-		get_viewport().set_input_as_handled()
+func on_panel_opened() -> void:
+	_rebuild()
+	_panel_open = true
+	panel.visible = true
 
-func _toggle() -> void:
-	_visible_panel = not _visible_panel
-	if _visible_panel:
-		visible = true
-		modulate.a = 0.0
-		_rebuild_ui()
-		var tw := create_tween()
-		tw.tween_property(self, "modulate:a", 1.0, 0.15)
+func on_panel_closed() -> void:
+	_panel_open = false
+	panel.visible = false
+
+func _refresh() -> void:
+	if _panel_open:
+		_rebuild()
+
+func _rebuild() -> void:
+	for ch in card_container.get_children():
+		ch.queue_free()
+
+	var tab_row := HBoxContainer.new()
+	tab_row.add_theme_constant_override("separation", 8)
+	card_container.add_child(tab_row)
+
+	var stock_btn := Button.new()
+	stock_btn.text = "Stock"
+	stock_btn.custom_minimum_size = Vector2(100, 30)
+	stock_btn.pressed.connect(func(): _current_tab = 0; _rebuild())
+	tab_row.add_child(stock_btn)
+
+	var price_btn := Button.new()
+	price_btn.text = "Pricing"
+	price_btn.custom_minimum_size = Vector2(100, 30)
+	price_btn.pressed.connect(func(): _current_tab = 1; _rebuild())
+	tab_row.add_child(price_btn)
+
+	var tab_sep := HSeparator.new()
+	card_container.add_child(tab_sep)
+
+	if _current_tab == 0:
+		_build_stock_section()
 	else:
-		var tw := create_tween()
-		tw.tween_property(self, "modulate:a", 0.0, 0.1)
-		tw.tween_callback(func(): visible = false)
+		_build_pricing_section()
 
-func _on_shelf_stock_changed(shelf: Node, product_id: String, _current: int, _max_stock: int, _side_name: String) -> void:
-	_recalculate_from_shelves()
-	if _visible_panel:
-		_rebuild_ui()
-
-func _recalculate_from_shelves() -> void:
-	_product_totals.clear()
-	_shelf_max_total = 0
+func _build_stock_section() -> void:
 	var shelves := get_tree().get_nodes_in_group("shelves")
+
+	if shelves.is_empty():
+		var empty_lbl := Label.new()
+		empty_lbl.text = "No shelves placed yet."
+		empty_lbl.add_theme_font_size_override("font_size", 14)
+		empty_lbl.add_theme_color_override("font_color", Color(0.50, 0.52, 0.58))
+		card_container.add_child(empty_lbl)
+		return
+
+	var grand_cur: int = 0
+	var grand_max: int = 0
+
 	for shelf in shelves:
-		if not shelf.has_method("get_total_stock"):
-			continue
-		if shelf.has_method("get_total_max"):
-			_shelf_max_total += shelf.get_total_max()
-		if "stock" in shelf and shelf.stock is Dictionary:
-			for side_key in shelf.stock:
-				var sd = shelf.stock[side_key]
-				if sd is Dictionary:
-					for pid in sd:
-						var c: int = sd[pid]
-						if c > 0:
-							_product_totals[pid] = _product_totals.get(pid, 0) + c
+		var cur: int = shelf.get_total_stock()
+		var mx: int = shelf.get_total_capacity()
+		grand_cur += cur
+		grand_max += mx
 
-func _rebuild_ui() -> void:
-	_clear(stock_list)
-	_clear(alert_list)
+		var card := _make_card()
+		var vbox := VBoxContainer.new()
+		vbox.add_theme_constant_override("separation", 4)
+		card.add_child(vbox)
 
-	var db = get_node_or_null("/root/ProductDatabase")
-	var grand: int = 0
-	for v in _product_totals.values():
-		grand += v
+		var top_row := HBoxContainer.new()
+		top_row.add_theme_constant_override("separation", 10)
 
-	var gr: float = float(grand) / float(_shelf_max_total) if _shelf_max_total > 0 else 0.0
-	_add_row(stock_list, "Total Inventory", "%d / %d" % [grand, _shelf_max_total], _ratio_color(gr, grand), true)
-	_add_bar(stock_list, grand, _shelf_max_total, gr)
-	_add_sep(stock_list)
+		var name_lbl := Label.new()
+		name_lbl.text = _shelf_display_name(shelf)
+		name_lbl.add_theme_font_size_override("font_size", 16)
+		name_lbl.add_theme_color_override("font_color", Color(0.92, 0.93, 0.97))
+		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		top_row.add_child(name_lbl)
 
-	var pids: Array = _product_totals.keys()
-	pids.sort()
-	for pid in pids:
-		var c: int = _product_totals[pid]
-		var pname: String = pid.capitalize()
-		if db:
-			var p = db.get_product(pid)
-			if p and "product_name" in p:
-				pname = p.product_name
-		var col: Color = COL_EMPTY if c <= 1 else (COL_LOW if c <= 3 else COL_OK)
-		_add_row(stock_list, pname, str(c), col, false)
+		var ratio: float = float(cur) / float(mx) if mx > 0 else 0.0
+		var col := _ratio_color(ratio, cur)
 
-	if _product_totals.is_empty():
-		var lbl := Label.new()
-		lbl.text = "No stock on shelves"
-		lbl.add_theme_color_override("font_color", COL_MUTED)
-		lbl.add_theme_font_size_override("font_size", 13)
-		stock_list.add_child(lbl)
+		var count_lbl := Label.new()
+		count_lbl.text = "%d / %d" % [cur, mx]
+		count_lbl.add_theme_font_size_override("font_size", 14)
+		count_lbl.add_theme_color_override("font_color", col)
+		top_row.add_child(count_lbl)
 
-	_add_sep(stock_list)
+		vbox.add_child(top_row)
 
-	var shelves := get_tree().get_nodes_in_group("shelves")
-	for shelf in shelves:
-		if not shelf.has_method("get_total_stock"):
-			continue
-		var tags: Array[String] = []
-		if shelf.has_method("get_all_tags"):
-			tags = shelf.get_all_tags()
-		var tag: String = tags[0].capitalize() if not tags.is_empty() else "?"
-		var ts: int = shelf.get_total_stock()
-		var tm: int = shelf.get_total_max() if shelf.has_method("get_total_max") else 10
-		var r: float = float(ts) / float(tm) if tm > 0 else 0.0
-		_add_row(stock_list, tag, "%d/%d" % [ts, tm], _ratio_color(r, ts), false)
+		var side_names: Array = shelf.get_sides()
+		for side_name in side_names:
+			var side_cur: int = shelf.get_side_stock(side_name)
+			var side_mx: int = shelf.get_side_capacity(side_name)
+			var side_tag: String = ""
+			if shelf.has_method("get_tag_for_side"):
+				side_tag = shelf.get_tag_for_side(side_name)
 
-	_rebuild_alerts(db)
+			var side_row := HBoxContainer.new()
+			side_row.add_theme_constant_override("separation", 8)
 
-func _rebuild_alerts(db) -> void:
-	for pid in _product_totals:
-		var c: int = _product_totals[pid]
-		if c > 3:
-			continue
-		var pname: String = pid.capitalize()
-		if db:
-			var p = db.get_product(pid)
-			if p and "product_name" in p:
-				pname = p.product_name
-		var a := Label.new()
-		if c <= 0:
-			a.text = "⚠ %s — EMPTY" % pname
-			a.add_theme_color_override("font_color", COL_EMPTY)
-		else:
-			a.text = "⚠ %s — Low (%d)" % [pname, c]
-			a.add_theme_color_override("font_color", COL_LOW)
-		a.add_theme_font_size_override("font_size", 13)
-		alert_list.add_child(a)
+			var side_label := Label.new()
+			var side_text: String = side_name
+			if not side_tag.is_empty():
+				side_text = "%s [%s]" % [side_name, side_tag.capitalize()]
+			side_label.text = side_text
+			side_label.add_theme_font_size_override("font_size", 13)
+			side_label.add_theme_color_override("font_color", Color(0.60, 0.62, 0.68))
+			side_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+			side_row.add_child(side_label)
 
-	if db:
-		for pid in db.get_all_product_ids():
-			if _product_totals.get(pid, 0) <= 0:
-				var p = db.get_product(pid)
-				var n: String = p.product_name if p and "product_name" in p else pid.capitalize()
-				var a := Label.new()
-				a.text = "⚠ %s — OUT" % n
-				a.add_theme_color_override("font_color", COL_EMPTY)
-				a.add_theme_font_size_override("font_size", 13)
-				alert_list.add_child(a)
+			var s_ratio: float = float(side_cur) / float(side_mx) if side_mx > 0 else 0.0
+			var s_col := _ratio_color(s_ratio, side_cur)
 
-func _add_row(parent: VBoxContainer, left: String, right: String, col: Color, bold: bool) -> void:
-	var row := HBoxContainer.new()
-	row.add_theme_constant_override("separation", 8)
-	var lbl := Label.new()
-	lbl.text = left
-	lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	lbl.add_theme_font_size_override("font_size", 14 if bold else 13)
-	lbl.add_theme_color_override("font_color", COL_TEXT)
-	row.add_child(lbl)
-	var rlbl := Label.new()
-	rlbl.text = right
-	rlbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
-	rlbl.add_theme_font_size_override("font_size", 14 if bold else 13)
-	rlbl.add_theme_color_override("font_color", col)
-	row.add_child(rlbl)
-	parent.add_child(row)
+			var s_count := Label.new()
+			s_count.text = "%d / %d" % [side_cur, side_mx]
+			s_count.add_theme_font_size_override("font_size", 13)
+			s_count.add_theme_color_override("font_color", s_col)
+			side_row.add_child(s_count)
 
-func _add_bar(parent: VBoxContainer, val: int, mx: int, ratio: float) -> void:
-	var bar := ProgressBar.new()
-	bar.custom_minimum_size = Vector2(0, 6)
-	bar.max_value = mx
-	bar.value = val
-	bar.show_percentage = false
-	var bg := StyleBoxFlat.new()
-	bg.bg_color = Color(0.12, 0.12, 0.15)
-	bg.corner_radius_top_left = 2
-	bg.corner_radius_top_right = 2
-	bg.corner_radius_bottom_left = 2
-	bg.corner_radius_bottom_right = 2
-	bar.add_theme_stylebox_override("background", bg)
-	var fill := StyleBoxFlat.new()
-	fill.bg_color = _ratio_color(ratio, val)
-	fill.corner_radius_top_left = 2
-	fill.corner_radius_top_right = 2
-	fill.corner_radius_bottom_left = 2
-	fill.corner_radius_bottom_right = 2
-	bar.add_theme_stylebox_override("fill", fill)
-	parent.add_child(bar)
+			vbox.add_child(side_row)
 
-func _add_sep(parent: VBoxContainer) -> void:
+		card_container.add_child(card)
+
 	var sep := HSeparator.new()
-	sep.add_theme_constant_override("separation", 4)
-	parent.add_child(sep)
+	card_container.add_child(sep)
+
+	var summary := _make_card(Color(0.30, 0.50, 0.80, 0.5))
+	var sum_row := HBoxContainer.new()
+	sum_row.add_theme_constant_override("separation", 10)
+	summary.add_child(sum_row)
+
+	var total_lbl := Label.new()
+	total_lbl.text = "Total Stock"
+	total_lbl.add_theme_font_size_override("font_size", 16)
+	total_lbl.add_theme_color_override("font_color", Color(0.92, 0.93, 0.97))
+	total_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	sum_row.add_child(total_lbl)
+
+	var t_ratio: float = float(grand_cur) / float(grand_max) if grand_max > 0 else 0.0
+	var t_col := _ratio_color(t_ratio, grand_cur)
+
+	var t_count := Label.new()
+	t_count.text = "%d / %d" % [grand_cur, grand_max]
+	t_count.add_theme_font_size_override("font_size", 14)
+	t_count.add_theme_color_override("font_color", t_col)
+	sum_row.add_child(t_count)
+
+	card_container.add_child(summary)
+
+func _build_pricing_section() -> void:
+	var db = get_node_or_null("/root/ProductDatabase")
+	if db == null:
+		return
+
+	var all_products: Array = db.get_all_products()
+	if all_products.is_empty():
+		var empty_lbl := Label.new()
+		empty_lbl.text = "No products registered."
+		empty_lbl.add_theme_font_size_override("font_size", 14)
+		empty_lbl.add_theme_color_override("font_color", Color(0.50, 0.52, 0.58))
+		card_container.add_child(empty_lbl)
+		return
+
+	for p in all_products:
+		var card := _make_card()
+		var vbox := VBoxContainer.new()
+		vbox.add_theme_constant_override("separation", 4)
+		card.add_child(vbox)
+
+		var top_row := HBoxContainer.new()
+		top_row.add_theme_constant_override("separation", 10)
+		var name_lbl := Label.new()
+		name_lbl.text = p.product_name
+		name_lbl.add_theme_font_size_override("font_size", 16)
+		name_lbl.add_theme_color_override("font_color", Color(0.92, 0.93, 0.97))
+		name_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		top_row.add_child(name_lbl)
+		vbox.add_child(top_row)
+
+		var cost_row := HBoxContainer.new()
+		cost_row.add_theme_constant_override("separation", 8)
+		var cost_lbl := Label.new()
+		cost_lbl.text = "Cost: $%.2f" % p.base_price
+		cost_lbl.add_theme_font_size_override("font_size", 13)
+		cost_lbl.add_theme_color_override("font_color", Color(0.60, 0.62, 0.68))
+		cost_row.add_child(cost_lbl)
+		vbox.add_child(cost_row)
+
+		var price_row := HBoxContainer.new()
+		price_row.add_theme_constant_override("separation", 6)
+
+		var minus_btn := Button.new()
+		minus_btn.text = "-"
+		minus_btn.custom_minimum_size = Vector2(28, 28)
+		var pid_for_minus: String = p.product_id
+		minus_btn.pressed.connect(func(): _adjust_price(pid_for_minus, -0.10))
+		price_row.add_child(minus_btn)
+
+		var effective: float = p.get_effective_price()
+		var margin: float = p.get_profit_margin()
+		var price_color := Color(0.3, 0.88, 0.48)
+		if effective <= p.base_price:
+			price_color = Color(1.0, 0.38, 0.38)
+		elif margin < 0.2:
+			price_color = Color(1.0, 0.82, 0.28)
+
+		var price_lbl := Label.new()
+		price_lbl.text = "$%.2f" % effective
+		price_lbl.add_theme_font_size_override("font_size", 15)
+		price_lbl.add_theme_color_override("font_color", price_color)
+		price_lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		price_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		price_row.add_child(price_lbl)
+
+		var plus_btn := Button.new()
+		plus_btn.text = "+"
+		plus_btn.custom_minimum_size = Vector2(28, 28)
+		var pid_for_plus: String = p.product_id
+		plus_btn.pressed.connect(func(): _adjust_price(pid_for_plus, 0.10))
+		price_row.add_child(plus_btn)
+
+		vbox.add_child(price_row)
+
+		var info_row := HBoxContainer.new()
+		info_row.add_theme_constant_override("separation", 12)
+
+		var margin_lbl := Label.new()
+		margin_lbl.text = "Margin: %d%%" % int(margin * 100.0)
+		margin_lbl.add_theme_font_size_override("font_size", 12)
+		margin_lbl.add_theme_color_override("font_color", price_color)
+		info_row.add_child(margin_lbl)
+
+		var demand_lbl := Label.new()
+		demand_lbl.text = "Demand: %.1fx" % p.demand_factor
+		demand_lbl.add_theme_font_size_override("font_size", 12)
+		demand_lbl.add_theme_color_override("font_color", Color(0.60, 0.62, 0.68))
+		info_row.add_child(demand_lbl)
+
+		vbox.add_child(info_row)
+
+		card_container.add_child(card)
+
+func _adjust_price(product_id: String, delta: float) -> void:
+	var db = get_node_or_null("/root/ProductDatabase")
+	if db == null:
+		return
+	var p = db.get_product(product_id)
+	if p == null:
+		return
+	db.set_product_price(product_id, p.get_effective_price() + delta)
+	_rebuild()
+
+func _make_card(border_color: Color = Color(0.24, 0.26, 0.32, 0.5)) -> PanelContainer:
+	var card := PanelContainer.new()
+	var card_style := StyleBoxFlat.new()
+	card_style.bg_color = Color(0.10, 0.11, 0.14, 0.85)
+	card_style.border_width_left = 1
+	card_style.border_width_top = 1
+	card_style.border_width_right = 1
+	card_style.border_width_bottom = 1
+	card_style.border_color = border_color
+	card_style.corner_radius_top_left = 6
+	card_style.corner_radius_top_right = 6
+	card_style.corner_radius_bottom_left = 6
+	card_style.corner_radius_bottom_right = 6
+	card_style.content_margin_left = 14.0
+	card_style.content_margin_right = 14.0
+	card_style.content_margin_top = 10.0
+	card_style.content_margin_bottom = 10.0
+	card.add_theme_stylebox_override("panel", card_style)
+	return card
+
+func _shelf_display_name(shelf: Node) -> String:
+	if shelf.has_method("get_all_tags"):
+		var tags: Array[String] = shelf.get_all_tags()
+		if not tags.is_empty():
+			var parts: PackedStringArray = []
+			for tag in tags:
+				parts.append(tag.capitalize())
+			return " / ".join(parts) + " Shelf"
+	if "front_shelf_tag" in shelf and not shelf.front_shelf_tag.is_empty():
+		return shelf.front_shelf_tag.capitalize() + " Shelf"
+	return str(shelf.name) if not shelf.name.is_empty() else "Shelf"
 
 func _ratio_color(ratio: float, val: int) -> Color:
 	if val <= 0:
-		return COL_EMPTY
-	if ratio < LOW_RATIO:
-		return COL_LOW
-	return COL_OK
-
-func _clear(container: VBoxContainer) -> void:
-	for ch in container.get_children():
-		ch.queue_free()
+		return Color(1.0, 0.38, 0.38)
+	if ratio < 0.3:
+		return Color(1.0, 0.82, 0.28)
+	return Color(0.3, 0.88, 0.48)

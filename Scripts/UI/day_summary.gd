@@ -16,20 +16,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
-		_on_continue()
+		_dismiss()
 		get_viewport().set_input_as_handled()
 
 func _on_day_ended(day_number: int) -> void:
 	var gm = get_node_or_null("/root/GameManager")
 	if gm == null:
 		return
-
-	title_label.text = "Day %d Complete!" % day_number
-	revenue_label.text = "Revenue: $%.2f" % gm.total_revenue
-	customers_label.text = "Customers Served: %d" % gm.total_customers_served
-	balance_label.text = "Balance: $%.2f" % gm.money
-
+	title_label.text = "Day %d Complete" % day_number
+	revenue_label.text = "$%.2f" % gm.total_revenue
+	customers_label.text = "%d" % gm.total_customers_served
+	balance_label.text = "$%.2f" % gm.money
 	visible = true
+	modulate.a = 0.0
+	create_tween().tween_property(self, "modulate:a", 1.0, 0.2)
 
-func _on_continue() -> void:
-	visible = false
+func _dismiss() -> void:
+	var tw := create_tween()
+	tw.tween_property(self, "modulate:a", 0.0, 0.15)
+	tw.tween_callback(func(): visible = false)

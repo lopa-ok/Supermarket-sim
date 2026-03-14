@@ -4,11 +4,13 @@ extends Interactable
 const FALLBACK_SIZE := Vector3(0.2, 0.2, 0.2)
 const FALLBACK_COLOR := Color(0.6, 0.6, 0.7, 0.35)
 const PRODUCT_SCALE := 41.23
+const FRESHNESS_TINT_INTERVAL := 3.0
 
 var sides: Dictionary = {}
 var _slot_data: Dictionary = {}
 var _interaction_map: Dictionary = {}
 var _scene_cache: Dictionary = {}
+var _freshness_tint_timer: float = 0.0
 
 var stock: Dictionary:
 	get:
@@ -40,6 +42,13 @@ func _ready() -> void:
 					if marker is Marker3D:
 						marker.scale = Vector3.ONE
 			_register_side(child)
+
+func _process(delta: float) -> void:
+	_freshness_tint_timer += delta
+	if _freshness_tint_timer < FRESHNESS_TINT_INTERVAL:
+		return
+	_freshness_tint_timer = 0.0
+	_update_freshness_tints()
 
 func _register_side(side_node: ShelfSide) -> void:
 	var side_name: String = side_node.name
@@ -86,8 +95,17 @@ func get_side_max(side_name: String) -> int:
 func get_total_max() -> int:
 	var total := 0
 	for side_name in sides:
-		total += sides[side_name].max_stock
+		total += get_side_capacity(side_name)
 	return total
+
+func get_total_capacity() -> int:
+	return get_total_max()
+
+func get_sides() -> Array:
+	return sides.keys()
+
+func get_side_capacity(side_name: String) -> int:
+	return get_side_max(side_name)
 
 func get_total_stock() -> int:
 	var total := 0
@@ -106,7 +124,7 @@ func get_stock_of(product_id: String) -> int:
 				total += 1
 	return total
 
-func get_side_stock(side_name: String) -> Dictionary:
+func get_side_stock_detail(side_name: String) -> Dictionary:
 	var counts: Dictionary = {}
 	if side_name in _slot_data:
 		for entry in _slot_data[side_name]:
@@ -114,6 +132,9 @@ func get_side_stock(side_name: String) -> Dictionary:
 			if pid != "":
 				counts[pid] = counts.get(pid, 0) + 1
 	return counts
+
+func get_side_stock(side_name: String) -> int:
+	return _count_filled(side_name)
 
 func get_side_total(side_name: String) -> int:
 	return _count_filled(side_name)
@@ -404,3 +425,57 @@ func _get_scene(product_id: String) -> PackedScene:
 			scene = loaded as PackedScene
 	_scene_cache[product_id] = scene
 	return scene
+
+func _update_freshness_tints() -> void:
+	var fm = get_node_or_null("/root/FreshnessManager")
+	if fm == null:
+		return
+	for side_name in _slot_data:
+		var slots: Array = _slot_data[side_name]
+		for entry in slots:
+			var pid: String = entry["product_id"]
+			var inst: Node = entry["mesh_instance"]
+			if pid.is_empty() or inst == null or not is_instance_valid(inst):
+				continue
+			var freshness: float = fm.get_freshness(self, side_name, pid)
+			_apply_freshness_tint(inst, freshness)
+
+func _apply_freshness_tint(node: Node, freshness: float) -> void:
+	if not (node is MeshInstance3D or node is Node3D):
+		return
+	if freshness >= 80.0:
+		_clear_freshness_tint(node)
+		return
+	var tint_color: Color = _calc_freshness_color(freshness)
+	_set_tint_on_node(node, tint_color)
+
+func _calc_freshness_color(freshness: float) -> Color:
+	var t_high: float = clampf((80.0 - freshness) / 50.0, 0.0, 1.0)
+	var t_low: float = clampf((30.0 - freshness) / 30.0, 0.0, 1.0)
+	var fresh_color := Color(1.0, 1.0, 1.0)
+	var stale_color := Color(0.85, 0.78, 0.45)
+	var expired_color := Color(0.55, 0.35, 0.25)
+	var mid := fresh_color.lerp(stale_color, t_high)
+	return mid.lerp(expired_color, t_low)
+
+func _set_tint_on_node(target: Node, color: Color) -> void:
+	if target is MeshInstance3D:
+		var mat: StandardMaterial3D = null
+		if target.material_override and target.material_override.has_meta("freshness_tint"):
+			mat = target.material_override as StandardMaterial3D
+		else:
+			mat = StandardMaterial3D.new()
+			mat.set_meta("freshness_tint", true)
+		mat.albedo_color = color
+		target.material_override = mat
+		return
+	for child in target.get_children():
+		_set_tint_on_node(child, color)
+
+func _clear_freshness_tint(target: Node) -> void:
+	if target is MeshInstance3D:
+		if target.material_override and target.material_override.has_meta("freshness_tint"):
+			target.material_override = null
+		return
+	for child in target.get_children():
+		_clear_freshness_tint(child)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://Scripts/UI/pause_menu.gd" id="1_pause"]
-[ext_resource type="Theme" path="res://Resources/ui_theme.tres" id="2_theme"]
+[ext_resource type="Theme" uid="uid://b2nf2m4op8ahy" path="res://Resources/ui_theme.tres" id="2_theme"]
 
 [node name="PauseMenu" type="Control"]
 layout_mode = 3
@@ -37,20 +37,20 @@ mouse_filter = 2
 [node name="MainPanel" type="PanelContainer" parent="Center"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(320, 0)
+custom_minimum_size = Vector2(340, 0)
 
 [node name="VBox" type="VBoxContainer" parent="Center/MainPanel"]
 layout_mode = 2
-theme_override_constants/separation = 12
+theme_override_constants/separation = 14
 
 [node name="Spacer1" type="Control" parent="Center/MainPanel/VBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 8)
+custom_minimum_size = Vector2(0, 10)
 
 [node name="Title" type="Label" parent="Center/MainPanel/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.92, 0.93, 0.97, 1)
+theme_override_font_sizes/font_size = 26
 text = "PAUSED"
 horizontal_alignment = 1
 
@@ -60,45 +60,45 @@ layout_mode = 2
 [node name="ResumeBtn" type="Button" parent="Center/MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 46)
 theme_override_font_sizes/font_size = 18
 text = "Resume"
 
 [node name="SettingsBtn" type="Button" parent="Center/MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 46)
 theme_override_font_sizes/font_size = 18
 text = "Settings"
 
 [node name="QuitBtn" type="Button" parent="Center/MainPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 44)
+custom_minimum_size = Vector2(0, 46)
 theme_override_font_sizes/font_size = 18
 text = "Quit"
 
 [node name="Spacer2" type="Control" parent="Center/MainPanel/VBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 8)
+custom_minimum_size = Vector2(0, 10)
 
 [node name="SettingsPanel" type="PanelContainer" parent="Center"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(340, 0)
+custom_minimum_size = Vector2(360, 0)
 visible = false
 
 [node name="VBox" type="VBoxContainer" parent="Center/SettingsPanel"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 12
 
 [node name="Spacer1" type="Control" parent="Center/SettingsPanel/VBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 8)
+custom_minimum_size = Vector2(0, 10)
 
 [node name="Title" type="Label" parent="Center/SettingsPanel/VBox"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.8, 0.82, 0.95, 1)
+theme_override_colors/font_color = Color(0.88, 0.90, 0.96, 1)
 theme_override_font_sizes/font_size = 22
 text = "Settings"
 horizontal_alignment = 1
@@ -114,7 +114,7 @@ text = "Master Volume"
 [node name="VolSlider" type="HSlider" parent="Center/SettingsPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 22)
 min_value = 0.0
 max_value = 100.0
 value = 100.0
@@ -127,7 +127,7 @@ text = "Mouse Sensitivity"
 [node name="SensSlider" type="HSlider" parent="Center/SettingsPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 22)
 min_value = 0.0
 max_value = 100.0
 value = 50.0
@@ -135,10 +135,10 @@ value = 50.0
 [node name="BackBtn" type="Button" parent="Center/SettingsPanel/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 42)
 theme_override_font_sizes/font_size = 16
 text = "Back"
 
 [node name="Spacer2" type="Control" parent="Center/SettingsPanel/VBox"]
 layout_mode = 2
-custom_minimum_size = Vector2(0, 8)
+custom_minimum_size = Vector2(0, 10)

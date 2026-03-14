@@ -32,3 +32,24 @@ signal customer_entered_aisle(customer: Node, aisle: Node)
 signal customer_left_aisle(customer: Node, aisle: Node)
 
 signal upgrade_purchased(upgrade_id: String, new_level: int)
+
+signal worker_hired(worker_data: Dictionary)
+signal worker_fired(worker_data: Dictionary)
+signal worker_wage_deducted(total_wages: float)
+signal workers_changed
+signal worker_bot_spawned(bot: Node)
+signal worker_bot_removed(bot: Node)
+
+signal theft_attempted(customer: Node, item_value: float)
+signal theft_succeeded(customer: Node, item_value: float)
+signal theft_prevented(customer: Node, guard: Dictionary)
+
+signal reputation_changed(new_value: float)
+signal reputation_milestone(level: String)
+
+signal restock_activity(shelf: Node, product_id: String, worker: Dictionary)
+
+signal price_changed(product_id: String, new_price: float)
+signal product_expired(shelf: Node, product_id: String)
+signal customer_group_entered(group_id: int, members: Array)
+signal customer_group_left(group_id: int)

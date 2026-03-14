@@ -12,9 +12,6 @@ extends Control
 
 var _was_captured: bool = true
 
-const COL_TITLE := Color(0.9, 0.9, 0.95)
-const COL_LABEL := Color(0.78, 0.78, 0.82)
-
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
@@ -32,8 +29,12 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if get_tree().paused:
 			_unpause()
-		else:
-			_pause()
+			get_viewport().set_input_as_handled()
+			return
+		var ui_mgr = get_node_or_null("/root/UIManager")
+		if ui_mgr and ui_mgr.is_any_panel_open():
+			return
+		_pause()
 		get_viewport().set_input_as_handled()
 
 func _pause() -> void:

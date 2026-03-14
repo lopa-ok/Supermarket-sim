@@ -1,5 +1,7 @@
 extends Node
 
+signal price_changed(product_id: String, new_price: float)
+
 var products: Dictionary = {}
 
 func _ready() -> void:
@@ -24,11 +26,34 @@ func get_products_by_category(category: String) -> Array:
 func get_all_product_ids() -> Array:
 	return products.keys()
 
+func get_all_products() -> Array:
+	return products.values()
+
 func get_random_product_id() -> String:
 	var ids := get_all_product_ids()
 	if ids.is_empty():
 		return ""
 	return ids[randi() % ids.size()]
+
+func set_product_price(product_id: String, new_price: float) -> void:
+	var p = get_product(product_id)
+	if p:
+		p.current_price = maxf(0.01, new_price)
+		price_changed.emit(product_id, p.current_price)
+
+func adjust_demand(product_id: String, delta: float) -> void:
+	var p = get_product(product_id)
+	if p:
+		p.demand_factor = clampf(p.demand_factor + delta, 0.1, 3.0)
+
+func get_price_ratio(product_id: String) -> float:
+	var p = get_product(product_id)
+	if p == null:
+		return 1.0
+	var effective: float = p.get_effective_price()
+	if p.base_price <= 0.0:
+		return 1.0
+	return effective / p.base_price
 
 func _register_default_products() -> void:
 	var defaults := [
@@ -80,6 +105,9 @@ func _register_default_products() -> void:
 		product.category = d["category"]
 		product.base_price = d["base_price"]
 		product.sell_price = d["base_price"] * 1.4
+		product.current_price = d["base_price"] * 1.4
 		product.shelf_tag = d["shelf_tag"]
 		product.mesh_path = d.get("mesh_path", "")
+		product.freshness = 100.0
+		product.expiration_time = 300.0
 		register_product(product)

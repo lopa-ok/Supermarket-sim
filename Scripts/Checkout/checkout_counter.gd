@@ -107,7 +107,8 @@ func _finish_transaction(customer: Node) -> void:
 			if db:
 				var data = db.get_product(item["product_id"])
 				if data:
-					total += data.sell_price * item.get("quantity", 1)
+					total += data.get_effective_price() * item.get("quantity", 1)
+					db.adjust_demand(item["product_id"], 0.02)
 
 	var gm = get_node_or_null("/root/GameManager")
 	if gm:

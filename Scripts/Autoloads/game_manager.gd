@@ -5,6 +5,7 @@ var day_number: int = 1
 var store_is_open: bool = false
 var total_customers_served: int = 0
 var total_revenue: float = 0.0
+var reputation: float = 50.0
 
 var day_duration_seconds: float = 180.0
 
@@ -21,6 +22,9 @@ func spend_money(amount: float) -> bool:
 		self.money -= amount
 		return true
 	return false
+
+func apply_theft_loss(_value: float) -> void:
+	pass
 
 func open_store() -> void:
 	if store_is_open:

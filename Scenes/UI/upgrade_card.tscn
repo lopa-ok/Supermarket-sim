@@ -1,0 +1,69 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/upgrade_card.gd" id="1_card"]
+
+[node name="UpgradeCard" type="PanelContainer"]
+custom_minimum_size = Vector2(0, 90)
+script = ExtResource("1_card")
+
+[node name="HBox" type="HBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Info" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+theme_override_constants/separation = 2
+
+[node name="CardName" type="Label" parent="HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.95, 1)
+theme_override_font_sizes/font_size = 18
+text = "Upgrade Name"
+
+[node name="CardDesc" type="Label" parent="HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.6, 0.65, 1)
+theme_override_font_sizes/font_size = 13
+text = "Description goes here."
+autowrap_mode = 2
+
+[node name="CardLevel" type="Label" parent="HBox/Info"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.55, 0.75, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "Lv 0 / 10"
+
+[node name="Right" type="VBoxContainer" parent="HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+alignment = 1
+theme_override_constants/separation = 4
+
+[node name="CardEffect" type="Label" parent="HBox/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 14
+text = "Next: 1.08"
+horizontal_alignment = 2
+
+[node name="CardCost" type="Label" parent="HBox/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 15
+text = "$50.00"
+horizontal_alignment = 2
+
+[node name="CardBuyBtn" type="Button" parent="HBox/Right"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(100, 36)
+theme_override_font_sizes/font_size = 15
+text = "Upgrade"
