@@ -1,0 +1,60 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/tutorial_overlay.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://b2nf2m4op8ahy" path="res://Resources/ui_theme.tres" id="2_theme"]
+
+[node name="TutorialOverlay" type="Control"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Dim" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="Center" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Center"]
+custom_minimum_size = Vector2(560, 0)
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_bottom = 14
+
+[node name="VBox" type="VBoxContainer" parent="Center/Panel/Margin"]
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+theme_override_font_sizes/font_size = 22
+text = "Tutorial"
+
+[node name="BodyLabel" type="Label" parent="Center/Panel/Margin/VBox"]
+unique_name_in_owner = true
+autowrap_mode = 2
+theme_override_font_sizes/font_size = 14
+text = ""
+
+[node name="ButtonRow" type="HBoxContainer" parent="Center/Panel/Margin/VBox"]
+theme_override_constants/separation = 10
+
+[node name="SkipBtn" type="Button" parent="Center/Panel/Margin/VBox/ButtonRow"]
+unique_name_in_owner = true
+text = "Skip"
+size_flags_horizontal = 3
+
+[node name="NextBtn" type="Button" parent="Center/Panel/Margin/VBox/ButtonRow"]
+unique_name_in_owner = true
+text = "Next"

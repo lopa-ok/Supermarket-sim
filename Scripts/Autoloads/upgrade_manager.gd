@@ -2,6 +2,8 @@ extends Node
 
 const UPGRADE_DEFS: Dictionary = {
 	"customer_spawn_rate": {
+		"name": "Customer Flow",
+		"description": "Increases the rate at which customers arrive.",
 		"base_cost": 50.0,
 		"cost_exponent": 1.6,
 		"max_level": 10,
@@ -9,6 +11,8 @@ const UPGRADE_DEFS: Dictionary = {
 		"value_per_level": 0.08,
 	},
 	"shelf_capacity_bonus": {
+		"name": "Shelf Capacity",
+		"description": "Each shelf holds more products per side.",
 		"base_cost": 75.0,
 		"cost_exponent": 1.7,
 		"max_level": 8,
@@ -16,6 +20,8 @@ const UPGRADE_DEFS: Dictionary = {
 		"value_per_level": 1,
 	},
 	"checkout_speed": {
+		"name": "Checkout Speed",
+		"description": "Customers are processed faster at checkouts.",
 		"base_cost": 60.0,
 		"cost_exponent": 1.65,
 		"max_level": 10,
@@ -23,19 +29,44 @@ const UPGRADE_DEFS: Dictionary = {
 		"value_per_level": 0.1,
 	},
 	"restock_discount": {
+		"name": "Restock Discount",
+		"description": "Reduces the cost of restocking products.",
 		"base_cost": 40.0,
 		"cost_exponent": 1.55,
 		"max_level": 10,
 		"base_value": 0.0,
 		"value_per_level": 0.05,
 	},
+	"photo_copier": {
+		"name": "Photo Copier",
+		"description": "Unlock photo copiers that customers use for a fee. Each level unlocks another copier.",
+		"base_cost": 250.0,
+		"cost_exponent": 2.0,
+		"max_level": 3,
+		"base_value": 0.0,
+		"value_per_level": 1.0,
+	},
+	"vending_machine": {
+		"name": "Vending Machine",
+		"description": "Unlock a vending machine for passive store income.",
+		"base_cost": 150.0,
+		"cost_exponent": 2.0,
+		"max_level": 1,
+		"base_value": 0.0,
+		"value_per_level": 1.0,
+	},
 }
 
 var _levels: Dictionary = {}
 
 func _ready() -> void:
+	# Initialize defaults fresh each run (no persistence)
 	for id in UPGRADE_DEFS:
 		_levels[id] = 0
+
+func has_upgrade(id: String) -> bool:
+	# For 1-time unlock upgrades (machines), treat level > 0 as owned.
+	return get_level(id) > 0
 
 func get_level(id: String) -> int:
 	return _levels.get(id, 0)
@@ -50,6 +81,13 @@ func get_upgrade_value(id: String) -> float:
 		return 0.0
 	var def: Dictionary = UPGRADE_DEFS[id]
 	return def["base_value"] + def["value_per_level"] * _levels.get(id, 0)
+
+func get_next_value(id: String) -> float:
+	if id not in UPGRADE_DEFS:
+		return 0.0
+	var def: Dictionary = UPGRADE_DEFS[id]
+	var next_level: int = min(_levels.get(id, 0) + 1, def["max_level"])
+	return def["base_value"] + def["value_per_level"] * next_level
 
 func get_upgrade_cost(id: String) -> float:
 	if id not in UPGRADE_DEFS:

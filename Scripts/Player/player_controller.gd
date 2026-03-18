@@ -52,6 +52,11 @@ func _apply_gravity(delta: float) -> void:
 		velocity.y -= gravity * delta
 
 func _apply_movement() -> void:
+	if _is_input_blocked():
+		velocity.x = move_toward(velocity.x, 0, move_speed)
+		velocity.z = move_toward(velocity.z, 0, move_speed)
+		return
+
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
@@ -66,6 +71,14 @@ func _apply_movement() -> void:
 
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
+
+func _is_input_blocked() -> bool:
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr and ui_mgr.is_any_panel_open():
+		return true
+	if get_tree().paused:
+		return true
+	return false
 
 func _check_interaction_ray() -> void:
 	var found: Interactable = null

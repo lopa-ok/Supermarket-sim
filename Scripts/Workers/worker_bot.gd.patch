@@ -1,0 +1,20 @@
+--- /Users/lopa/Supermarket-Sim/Supermarket-simulator/Scripts/Workers/worker_bot.gd
++++ /Users/lopa/Supermarket-Sim/Supermarket-simulator/Scripts/Workers/worker_bot.gd
+@@ -242,7 +242,16 @@
+ 	_target_side = best_side
+ 	_carried_product_id = best_product_id
+ 	_target_crate = crate
+- _begin_stockroom_trip()
++
++# Ensure _stockroom_path_node is populated before trying to move
++if not _stockroom_path_node:
++var paths := get_tree().get_nodes_in_group("stockroom_path")
++if not paths.is_empty():
++_stockroom_path_node = paths[0]
++
++# Delay by a frame to let any dynamic stockroom creation happen
++get_tree().process_frame.connect(_begin_stockroom_trip, CONNECT_ONE_SHOT)
++
+ 
+ func _begin_stockroom_trip() -> void:
+ 	if _stockroom_path_node and _stockroom_path_node.get_waypoint_count() > 0:

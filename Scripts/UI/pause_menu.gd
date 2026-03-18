@@ -8,12 +8,10 @@ extends Control
 @onready var main_panel: PanelContainer = %MainPanel
 @onready var vol_slider: HSlider = %VolSlider
 @onready var sens_slider: HSlider = %SensSlider
+@onready var keybinds_btn: Button = %KeybindsBtn
 @onready var back_btn: Button = %BackBtn
 
 var _was_captured: bool = true
-
-const COL_TITLE := Color(0.9, 0.9, 0.95)
-const COL_LABEL := Color(0.78, 0.78, 0.82)
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -21,19 +19,29 @@ func _ready() -> void:
 	resume_btn.pressed.connect(_unpause)
 	settings_btn.pressed.connect(_show_settings)
 	quit_btn.pressed.connect(_quit)
-	back_btn.pressed.connect(_hide_settings)
-	settings_panel.visible = false
-	vol_slider.value = 100.0
-	vol_slider.value_changed.connect(_on_vol)
-	sens_slider.value = 50.0
-	sens_slider.value_changed.connect(_on_sens)
+	if back_btn:
+		back_btn.pressed.connect(_hide_settings)
+	if keybinds_btn:
+		keybinds_btn.pressed.connect(_open_advanced_settings)
+	if settings_panel:
+		settings_panel.visible = false
+	if vol_slider:
+		vol_slider.value = 100.0
+		vol_slider.value_changed.connect(_on_vol)
+	if sens_slider:
+		sens_slider.value = 50.0
+		sens_slider.value_changed.connect(_on_sens)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
 		if get_tree().paused:
 			_unpause()
-		else:
-			_pause()
+			get_viewport().set_input_as_handled()
+			return
+		var ui_mgr = get_node_or_null("/root/UIManager")
+		if ui_mgr and ui_mgr.is_any_panel_open():
+			return
+		_pause()
 		get_viewport().set_input_as_handled()
 
 func _pause() -> void:
@@ -41,8 +49,10 @@ func _pause() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	get_tree().paused = true
 	visible = true
-	settings_panel.visible = false
-	main_panel.visible = true
+	if settings_panel:
+		settings_panel.visible = false
+	if main_panel:
+		main_panel.visible = true
 	resume_btn.grab_focus()
 
 func _unpause() -> void:
@@ -52,14 +62,23 @@ func _unpause() -> void:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 func _show_settings() -> void:
-	main_panel.visible = false
-	settings_panel.visible = true
-	back_btn.grab_focus()
+	_unpause()
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr:
+		ui_mgr.toggle_panel("settings")
 
 func _hide_settings() -> void:
-	settings_panel.visible = false
-	main_panel.visible = true
+	if settings_panel:
+		settings_panel.visible = false
+	if main_panel:
+		main_panel.visible = true
 	resume_btn.grab_focus()
+
+func _open_advanced_settings() -> void:
+	_unpause()
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr:
+		ui_mgr.toggle_panel("settings")
 
 func _quit() -> void:
 	get_tree().paused = false

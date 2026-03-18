@@ -8,6 +8,7 @@ extends Control
 @onready var main_panel: VBoxContainer = %MainPanel
 @onready var vol_slider: HSlider = %VolSlider
 @onready var sens_slider: HSlider = %SensSlider
+@onready var keybinds_btn: Button = %KeybindsBtn
 @onready var back_btn: Button = %BackBtn
 @onready var camera: Camera3D = %TitleCamera
 
@@ -23,17 +24,26 @@ const CAM_HEIGHT_SWAY := 0.3
 
 func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-	settings_panel.visible = false
-	main_panel.visible = true
+	if settings_panel:
+		settings_panel.visible = false
+	if main_panel:
+		main_panel.visible = true
 
 	play_btn.pressed.connect(_on_play)
 	settings_btn.pressed.connect(_on_settings)
 	quit_btn.pressed.connect(_on_quit)
-	back_btn.pressed.connect(_on_back)
+	
+	if back_btn:
+		back_btn.pressed.connect(_on_back)
+	
+	if keybinds_btn:
+		keybinds_btn.pressed.connect(_on_advanced_settings)
 
-	vol_slider.value = 100.0
-	vol_slider.value_changed.connect(_on_vol)
-	sens_slider.value = 50.0
+	if vol_slider:
+		vol_slider.value = 100.0
+		vol_slider.value_changed.connect(_on_vol)
+	if sens_slider:
+		sens_slider.value = 50.0
 
 	play_btn.grab_focus()
 
@@ -56,14 +66,21 @@ func _on_play() -> void:
 	get_tree().change_scene_to_file(STORE_SCENE)
 
 func _on_settings() -> void:
-	main_panel.visible = false
-	settings_panel.visible = true
-	back_btn.grab_focus()
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr:
+		ui_mgr.toggle_panel("settings")
 
 func _on_back() -> void:
-	settings_panel.visible = false
-	main_panel.visible = true
+	if settings_panel:
+		settings_panel.visible = false
+	if main_panel:
+		main_panel.visible = true
 	play_btn.grab_focus()
+
+func _on_advanced_settings() -> void:
+	var ui_mgr = get_node_or_null("/root/UIManager")
+	if ui_mgr:
+		ui_mgr.toggle_panel("settings")
 
 func _on_quit() -> void:
 	get_tree().quit()

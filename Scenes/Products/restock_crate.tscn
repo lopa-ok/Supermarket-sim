@@ -1,6 +1,45 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=8 format=4 uid="uid://bixdood62t6om"]
 
-[ext_resource type="Script" path="res://Scripts/Products/restock_crate.gd" id="1_crate"]
+[ext_resource type="Script" uid="uid://rfqqgd7ixil4" path="res://Scripts/Products/restock_crate.gd" id="1_crate"]
+[ext_resource type="Texture2D" uid="uid://d1oks8786fidi" path="res://Resources/Models/_Demo_SimpleShopInterior_Texture.jpg" id="2_fyply"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ui3ye"]
+resource_name = "SimpleShopInteriors"
+albedo_texture = ExtResource("2_fyply")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_l1j7q"]
+_surfaces = [{
+"aabb": AABB(-0.3310442, 0, -0.5183301, 0.6620884, 0.63933164, 1.0366597),
+"format": 34896613377,
+"index_count": 204,
+"index_data": PackedByteArray("AQACABoAAAABABoAAgAbABoAAAAaABsAAgAPABsAEgAbAA8AEgAAABsADQAPAAIADwARABIADQARAA8ADQACAAgAAQAIAAIADQAOABEADAANAAgADAAOAA0ADAAQAA4AEQAOABAACwAQAAwAEQAQABMACwATABAADAAIAAkACwAMAAkABgAJAAgAAQAGAAgABgAHAAkABQAGAAEABQAHAAYABwAKAAkACQAKAAsABwAFAAoACwAKABwAHQAFAAEACwAcAB4ACwAeABMAHAAKAAQACgAFAAQAHgAcAAQAAQAfAB0AAAAfAAEABQAdAAMAAwAdAB8ABQADAAQAAwAfACAAAAAgAB8ABAADACAABAAgAAAABAAAABIAHgAEABQABAASABQAFAATAB4AFQAUABIAFAAhABMAFAAVACEAEwAhACIAIgAhABUAEgAWABUAEQAWABIAIwARABMAEQAjABYAFwAjABMAIgAXABMAFgAjABcAIgAVABgAFgAYABUAFwAiABgAFgAZABgAFwAYABkAFgAXABkA"),
+"lods": [0.12531032, PackedByteArray("AAABAAIAAAADAAEABAADAAAAAwAFAAEABQADAAQABQAGAAEABQAHAAYAAQAGAAgAAQAIAAIABgAHAAkABgAJAAgABwAFAAoABwAKAAkACgAFAAQACQAKAAsACwAKAAQADAAIAAkACwAMAAkADAANAAgADQACAAgADAAOAA0ADQAPAAIADAAQAA4ACwAQAAwADQAOABEAEQAOABAADQARAA8AEgACAA8ADwARABIAEgAAAAIABAAAABIACwATABAAEQAQABMACwAEABQABAASABQAFAATAAsAFQAUABIAFAAVABMAEQAWABIAEgAWABUAFwARABMAEQAXABYAFQAXABMAFgAYABUAFwAVABgAFgAZABgAFwAYABkAFgAXABkA")],
+"name": "SimpleShopInteriors",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 36,
+"vertex_data": PackedByteArray("AAAAAP//AAAAAP////8AAIlX/////wAAAADDFNkRAAAAAAAAAAAAAAAA//8AAAAAAAD//838AAAAAP//FAQAAIlX///N/AAAiVf//xQEAACJV///AAAAAFeg//8AAAAAV6D//xQEAABXoP//zfwAAP/////N/AAAV6D/////AAD/////FAQAAP///////wAA//8AAP//AAD/////AAAAAP//AAAAAAAA//+tELmUAAD//60Q2+4AAP//U1bFxgAA//+tEMG+AAD//60QxcYAAIlXnor//wAAV6Ceiv//AACJV+9zAAAAAAAA2VfZEQAAV6DvcwAAAAAAANlXtTwAAAAAwxS1PAAA//9TVrmUAAD//1NWwb4AAP//U1bb7gAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_meucj"]
+resource_name = "_Demo_SI_Prop_CarboardBox_01"
+_surfaces = [{
+"aabb": AABB(-0.3310442, 0, -0.5183301, 0.6620884, 0.63933164, 1.0366597),
+"attribute_data": PackedByteArray("n1w6mp9cOpqfXDqan1w6mp9cOpqfXDqaxkORjsZDkY7GQ5GOxkORjsZDkY7GQ5GOxkORjsZDkY6fXDqan1w6mp9cOpqfXDqan1w6mp9cOprwUjqa8FI6mvBSOprwUjqagjw6moI8OpqCPDqagjw6moprOpqKazqaims6moprOpqCPDqagjw6moI8OpqCPDqagjw6moI8OpqCPDqagjw6moprOpqKazqaims6moprOpqCPDqagjw6moI8OpqCPDqa52I6mudiOprnYjqa52I6mudiOprnYjqa52I6mudiOppSO1bvUjtW71I7Vu/nYjqa52I6mudiOprnYjqa52I6mudiOprnYjqa52I6mudiOprnYjqa52I6mudiOprnYjqa52I6mudiOprnYjqa52I6mudiOpqfXDqan1w6mp9cOpqfXDqaUjtW71I7Vu9SO1bvUjtW7486rfCPOq3wjzqt8I86rfDbNJGO2zSRjts0kY7bNJGO2zSRjts0kY7bNJGO2zSRjlI7Vu/nYjqa52I6mudiOprnYjqa52I6mudiOpo="),
+"format": 34896613399,
+"index_count": 204,
+"index_data": PackedByteArray("AQACAE0AAAABAE0AAABNAE4AAwAAAE4AAwBOAAQABAAFAAMABgAHAAgACAAJAAYACQAKAAYACQALAAoACwAMAAoACwANAAwADgAPABAATwAOABAAUABPABAAUAAQABIAEgATAFAAEQBQABMAFAAVABYAFAAWABcAUQBSAFMAUQBTAFQAVQBWAFcAVQBXAFgAWQBaAFsAWQBbAFwAGAAZABoAGAAaABsAHAAdAB4AHAAeAB8AIAAhACIAIAAiACMAXQBeAF8AXQBfAGAAJAAlACYAJAAmACcAKAApACoAKAAqACsALAAtAC4ALAAuAC8AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOABhADkAOAA5ADoAOwA8AD0AOwBiADwAYgA7AD8AOwBjAD8APwBkAGIAYwBAAD8AQQBkAD8AQABjAEIAQQA+AGQAQABCAEMAPgBBAEMAQwBCAD4ARABFAEYARABHAEUAZQBJAEoASQBlAEgASgBmAGUASQBIAEsATABmAEoASwBIAGcATABnAGYASwBnAEwA"),
+"lods": [0.12531032, PackedByteArray("AAABAAIAAwAAAAIAAwACAAQABAAFAAMABgAHAAgACAAJAAYACQAKAAYACQALAAoACwAMAAoACwANAAwADgAPABAAEQAOABAAEQAQABIAEgATABEAFAAVABYAFAAWABcAGAAZABoAGAAaABsAHAAdAB4AHAAeAB8AIAAhACIAIAAiACMAJAAlACYAJAAmACcAKAApACoAKAAqACsALAAtAC4ALAAuAC8AMAAxADIAMAAzADEANAA1ADYANAA3ADUAOAA5ADoAOwA8AD0AOwA+ADwAPgA7AD8AOwBAAD8AQQA+AD8AQAA7AEIAPgBBAEMAQABCAEMAQwBCAD4ARABFAEYARABHAEUASABJAEoASQBIAEsATABIAEoASwBIAEwA")],
+"material": SubResource("StandardMaterial3D_ui3ye"),
+"name": "SimpleShopInteriors",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 104,
+"vertex_data": PackedByteArray("AAAAAP//AIAAAP////8AgIlX/////wCA//8AAP//AIBXoP////8AgP///////wCAiVf//xQE/z+JV///AAD/P1eg//8AAP8/V6D//xQE/z+JV///zfz/P1eg///N/P8/iVf//////z9XoP//////P4lX//8AAAAAAAD//wAAAAAAAAAAAAAAAFeg//8AAAAA//8AAAAAAAD/////AAAAAAAAAAAAAP+/AAAAAP///7///wAA////v///AAAAAP+/V6D//838/z//////zfz/P/////////8/V6D//////z9XoP//FAT/P/////8UBP8//////838/z9XoP//zfz/P1eg//8AAP8//////wAA/z//////FAT/P1eg//8UBP8/AAD//xQE/z8AAP//AAD/P4lX//8AAP8/iVf//xQE/z8AAP//zfz/PwAA//8UBP8/iVf//xQE/z+JV///zfz/PwAA//////8/AAD//838/z+JV///zfz/P4lX//////8///+tENvu/z///60Qwb7/P///rRC5lP8///+tEMXG/z//////////P/////8UBP8//////wAA/z//////zfz/P///rRDb7qoq//9TVsXGqir//60QxcaqKv//U1bFxqoq//+tEMG+qir//60QxcaqKv//rRC5lKoq/////wAAqir///////+qKv//AAAAAKoq//+tENvuqir//wAA//+qKgAA//8AAP8/AAD//838/z8AAP//////PwAA//8UBP8/AADDFNkRVNUAAP//AABU1QAA/////1TVAAAAAAAAVNUAAAAA//9U1YlXnor//wCAV6Ceiv//AICJV+9zAAAAAFeg73MAAAAA//9TVsG+qir//1NWuZSqKv//rRC5lKoq//+tEMG+qioAAMMU2RFU1QAA2VfZEVTVAADZV7U8VNUAAMMUtTxU1YlX/////wCAV6D/////AIBXoJ6K//8AgIlXnor//wCAV6D//wAAAACJV///AAAAAIlX73MAAAAAV6DvcwAAAAD//1NW2+6qKv//U1bBvqoq//9TVtvuqir//1NWuZSqKgAA2VfZEVTVAADZV7U8VNUAAMMUtTxU1f9/////f////3////9/////f////3///////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/AAD/fwAA/38AAP9/AAD/f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/////f////3////9/qiqqKqoqqiqqKqoqqiqqKqoqqiqqKqoqqiqqKqoqqiqqKqoqqiqqKqoqqiqqKqoq////f////3////9/////f1TVVNVU1VTVVNVU1VTVVNVU1VTV/3////9///////9/////f6oqqiqqKqoqqiqqKqoqqipU1VTVVNVU1VTVVNVU1VTV/3////9/////f////3///////3////9/////f////3+qKqoqqiqqKqoqqiqqKqoqVNVU1VTVVNVU1VTV")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_l1j7q")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crate"]
 size = Vector3(0.8, 0.6, 0.8)
@@ -10,7 +49,11 @@ size = Vector3(0.8, 0.6, 0.8)
 
 [node name="RestockCrate" type="StaticBody3D"]
 script = ExtResource("1_crate")
-product_id = ""
+
+[node name="SI_Prop_CarboardBox_15" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+mesh = SubResource("ArrayMesh_meucj")
+skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
@@ -18,4 +61,5 @@ shape = SubResource("BoxShape3D_crate")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+visible = false
 mesh = SubResource("BoxMesh_crate")
